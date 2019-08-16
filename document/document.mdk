@@ -1,6 +1,7 @@
 Title         : Eclipse Che 使用教程
 Author        : Heyi
 Logo          : True
+Package       : [UTF8]ctex
 
 [TITLE]
 ***
@@ -12,7 +13,11 @@ Eclipse Che是一款基于浏览器的在线集成开发环境（IDE），提供
 
 
 # 注册登录
-  
+首先开启浏览器访问网址：<http://120.55.69.180:8080> ，注册后显示如下登录界面，输入账号密码进行登录。
+
+![login]
+
+[login]: images/login.png "login" { width:auto; max-width:90% }
 
 # Eclipse Che 界面
 
