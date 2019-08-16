@@ -20,6 +20,14 @@ Eclipse Che是一款基于浏览器的在线集成开发环境（IDE），提供
 [login]: images/login.png "login" { width:auto; max-width:90% }
 
 # Eclipse Che 界面
+登录后显示eclipse che界面。
+
+![eclipse che]
+
+[eclipse che]: images/eclipse-che.png "eclipse che" { width:auto; max-width:90% }
+
+- *Organizations*
+
 
 #Workspace（以Java为例）
 
