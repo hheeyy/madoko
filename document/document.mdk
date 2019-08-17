@@ -29,7 +29,7 @@ Eclipse Che是一款基于浏览器的在线集成开发环境（IDE），提供
 
 - *Organizations*
 
-由管理者创建一个小组，由管理者和若干组员组成。管理员可以设置该小组的工作空间数量、可同时运行的工作空间数量以及该小组内工作空间可使用的最大内存等。
+由管理者创建一个小组，由管理者和若干组员组成。管理员可以设置该小组工作空间数量、可同时运行的工作空间数量以及该小组内工作空间可使用的最大内存等。
 
 组员可以与管理者共享工作空间，管理者可以设置组员对工作空间的使用权限，也有权限查看组员的工作空间，进行共享代码，并且可以进行代码的编辑、修改和调试等。
 
@@ -37,14 +37,14 @@ Eclipse Che是一款基于浏览器的在线集成开发环境（IDE），提供
 
 Workspace是程序储存和运行调试的地方，类似于本地的eclipse。创建一个属于自己的workspace的步骤如下：
 
-首先点击左侧菜单的Workspace，进入如下页面，可以看到此时已有两个workspace存在以及这两个workspace的一些属性。
+首先点击左侧菜单的Workspace，进入如下页面，可以看到此时已有两个工作空间存在及其一些属性。
 
 
 ![workspace1]
 
 [workspace1]: images/workspace1.png "workspace1" { width:auto; max-width:90% }
 
-然后点击 Add Workspace，出现如下页面。可以看到，workspace的名字用中文会报错，所以workspace的命名需要使用英文进行命名。在ORGANIZATION下拉框那里可以选择workspace建立在哪里
+然后点击 Add Workspace，出现如下页面。可以看到，workspace的名字用中文会报错，所以workspace的命名需要使用英文进行命名。在ORGANIZATION下拉框那里可以选择workspace建立在哪一个小组下面。
 
 ![creat1]
 
