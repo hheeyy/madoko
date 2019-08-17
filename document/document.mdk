@@ -35,7 +35,7 @@ Eclipse Che是一款基于浏览器的在线集成开发环境（IDE），提供
 
 - *创建一个Workspace（以Java为例）*
 
-workspace是程序运行和
+Workspace是程序储存和运行调试的空间
 
 ![workspace1]
 
