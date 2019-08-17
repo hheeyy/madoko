@@ -6,7 +6,7 @@ Package       : [UTF8]ctex
 [TITLE]
 ***
 
-# Eclipse Che 框架概述 
+# Eclipse Che 概述 
 
 Eclipse Che是一款基于浏览器的在线集成开发环境（IDE），提供多种语言支持，如Java、C++、Python、MySQL等，本教程主要以Java语言为例，来解决VRP（Vehicle Routing Problem）及其变种问题。
 
@@ -35,11 +35,20 @@ Eclipse Che是一款基于浏览器的在线集成开发环境（IDE），提供
 
 - *创建一个Workspace（以Java为例）*
 
-Workspace是程序储存和运行调试的空间
+Workspace是程序储存和运行调试的地方，类似于本地的eclipse。创建一个属于自己的workspace的步骤如下：
+
+首先点击左侧菜单的Workspace，进入如下页面，可以看到此时已有两个工作空间存在及其一些属性。
+
 
 ![workspace1]
 
 [workspace1]: images/workspace1.png "workspace1" { width:auto; max-width:90% }
+
+然后点击 Add Workspace，出现如下页面。可以看到，workspace的名字用中文会报错，
+
+![creat1]
+
+[creat1]: images/creat1.png "creat1" { width:auto; max-width:90% }
 
 
 #Workspace（以Java为例）
