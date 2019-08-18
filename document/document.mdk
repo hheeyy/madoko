@@ -16,13 +16,12 @@ Eclipse Che是一款基于浏览器的在线集成开发环境（IDE），提供
 !login
 
 
-
 # Eclipse Che 界面
 
 登录后显示eclipse che界面。
 
-!eclipse che
 
+!eclipse che
 
 
 - *Organizations*
@@ -41,8 +40,6 @@ Workspace是程序储存和运行调试的地方，类似于本地的eclipse。�
 !workspace1
 
 
-
-
 接着点击 Add Workspace，出现如下页面。可以看到，workspace的名字用中文会报错，所以workspace的命名需要使用英文进行命名。在ORGANIZATION下拉框处可以选择workspace建立在哪一个小组下面，可选择与小组中的成员进行共享；该教程以Java语言为主，所以SELECT STACK处选择Java环境；RAM处可以调整该workspace的内存大小，默认是2GB；PROJECTS处可以预先在新建的workspace中添加或引入项目，也可以在建立workspace之后再进行这一操作，具体操作在4.3节中详述。
 最后点击右上角或者是最下方的CREAT键，一个workspace就成功创建了。
 
@@ -50,17 +47,11 @@ Workspace是程序储存和运行调试的地方，类似于本地的eclipse。�
 
 
 
-
-
 !creat2
 
 
 
-
-
 !creat5
-
-
 
 
 
@@ -71,11 +62,7 @@ Workspace是程序储存和运行调试的地方，类似于本地的eclipse。�
 !creat3
 
 
-
-
 !creat4
-
-
 
 
 点击Share，再点击Add Developer，勾选要进行分享的账号之后，点击Share后就完成了工作空间的分享。在PERMISSIONS下可以看到share的账户对该工作空间的使用权限，如是否可以对该工作空间的内容进行更改等。
@@ -84,19 +71,15 @@ Workspace是程序储存和运行调试的地方，类似于本地的eclipse。�
 !creat6
 
 
-
-
 !creat7
-
-
 
 
 !creat8
 
 
-
-
 #Workspace（以Java为例）
+
+Workspace是
 
 ##Workspace窗口
 
