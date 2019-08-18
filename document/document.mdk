@@ -10,8 +10,6 @@ Package       : [UTF8]ctex
 
 Eclipse Che是一款基于浏览器的在线集成开发环境（IDE），提供多种语言支持，如Java、C++、Python、MySQL等，本教程主要以Java语言为例，来解决VRP（Vehicle Routing Problem）及其变种问题。
 
-
-
 # 注册登录
 首先开启浏览器访问网址：<http://120.55.69.180:8080> ，注册后显示如下登录界面，输入账号密码进行登录。
 
@@ -25,7 +23,7 @@ Eclipse Che是一款基于浏览器的在线集成开发环境（IDE），提供
 
 ![eclipse che]
 
-[eclipse che]: images/eclipse-che.png "eclipse che" { width:auto; max-width:90% }
+
 
 - *Organizations*
 
@@ -40,15 +38,48 @@ Workspace是程序储存和运行调试的地方，类似于本地的eclipse。�
 首先点击左侧菜单的Workspace，进入如下页面，可以看到此时已有两个工作空间存在及其一些属性。
 
 
-![workspace1]
+!workspace1
 
-[workspace1]: images/workspace1.png "workspace1" { width:auto; max-width:90% }
 
-然后点击 Add Workspace，出现如下页面。可以看到，workspace的名字用中文会报错，所以workspace的命名需要使用英文进行命名。在ORGANIZATION下拉框那里可以选择workspace建立在哪一个小组下面。
+接着点击 Add Workspace，出现如下页面。可以看到，workspace的名字用中文会报错，所以workspace的命名需要使用英文进行命名。在ORGANIZATION下拉框处可以选择workspace建立在哪一个小组下面，可选择与小组中的成员进行共享；该教程以Java语言为主，所以SELECT STACK处选择Java环境；RAM处可以调整该workspace的内存大小，默认是2GB；PROJECTS处可以预先在新建的workspace中添加或引入项目，也可以在建立workspace之后再进行这一操作，具体操作在4.3节中详述。
+最后点击右上角或者是最下方的CREAT键，一个workspace就成功创建了。
 
-![creat1]
+!creat1
 
-[creat1]: images/creat1.png "creat1" { width:auto; max-width:90% }
+
+
+!creat2
+
+
+
+!creat5
+
+
+
+这里要注意的一点是，如果希望自己所创建的workspace与其他人进行共享，那么还需要进行如下操作。
+
+在菜单栏选择Workspace，可以看到在该账号上之前已经有两个workspace存在，选择新建立的workspace（test）；或者直接在上一步workspace创建成功的界面上点击Edit键，进入编辑模式。
+
+!creat3
+
+
+
+!creat4
+
+
+
+点击Share，再点击Add Developer，勾选要进行分享的账号之后，点击Share后就完成了工作空间的分享。在PERMISSIONS下可以看到share的账户对该工作空间的使用权限，如是否可以对该工作空间的内容进行更改等。
+
+
+!creat6
+
+
+
+!creat7
+
+
+
+!creat8
 
 
 
