@@ -79,11 +79,12 @@ Workspace是程序储存和运行调试的地方，类似于本地的eclipse。�
 
 #Workspace（以Java为例）
 
-Workspace是
-
-Workspace是
+Workspace是程序存放和运行调试的空间，类似于本地的eclipse。
+在左侧点击进入新建立的test工作空间。
 
 ##Workspace窗口
+
+首先我们来看一下workspace的界面，
 
 ##Workspace菜单
 
