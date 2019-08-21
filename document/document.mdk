@@ -107,9 +107,14 @@ Workspace是程序存放和运行调试的空间，类似于本地的eclipse。
 
 ###Create a project
 
+Workspace --> Creat Project --> 
+
 ###Import a project
 
+Workspace --> Import Project -->
+
 ###Add External Libraries（以GVRP为例）
+  
   
 
 Madoko is a fast markdown processor for writing professional articles
