@@ -95,6 +95,21 @@ Workspace是程序存放和运行调试的空间，类似于本地的eclipse。
 - 控制台
 
 ##Workspace菜单
+
+- Workspace
+
+Import Project    从外部引入一个项目
+
+Creat Project     建立一个新项目
+
+Download as ZIP   将当前项目存为本地压缩包（ZIP格式）
+
+Stop              停止运行当前工作空间
+
+Status            当前工作空间运行情况
+
+Creat Factory     ？
+
 - run
 
 - debug
