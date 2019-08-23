@@ -98,21 +98,35 @@ Workspace是程序存放和运行调试的空间，类似于本地的eclipse。
 
 - Workspace
 
-Import Project    从外部引入一个项目
+*Import Project*    从外部引入一个项目
 
-Creat Project     建立一个新项目
+*Creat Project*     建立一个新项目
 
-Download as ZIP   将当前项目存为本地压缩包（ZIP格式）
+*Download as ZIP*   将当前项目存为本地压缩包（ZIP格式）
 
-Stop              停止运行当前工作空间
+*Stop*              停止运行当前工作空间
 
-Status            当前工作空间运行情况
+*Status*            当前工作空间运行情况
 
-Creat Factory     ？
+*Creat Factory*     ？
+
+- Project
+
+*New*   新建文件夹或者各种类型的文件
+
+*Upload File*   上传文件；选中文件夹后才会显示可点击
+
+*Upload Folder*   上传文件夹。这里要注意的一点是，上传的文件夹必须是以压缩包.ZIP的格式，如果是.RAR格式的压缩包则不能成功上传
+
+*Configue Classpath*   Java build Path,向当前项目中添加JAR包或是添加文件夹Folder
 
 - run
 
+运行当前类。注意这里要选择有主类的class后运行，选择不含有主类的class运行会出错。
+
 - debug
+
+对程序进行调试。
 
 - Manage commands
   
@@ -129,8 +143,10 @@ Workspace --> Creat Project -->
 Workspace --> Import Project -->
 
 ###Add External Libraries（以GVRP为例）
+
   
-  
+
+- 
 
 Madoko is a fast markdown processor for writing professional articles
 with a focus on simplicity and plain text readability.
