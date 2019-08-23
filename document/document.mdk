@@ -140,7 +140,10 @@ Workspace --> Creat Project -->
 
 ###Import a project
 
-Workspace --> Import Project -->
+Workspace --> Import Project --> 粘贴github的URL
+
+假如github的repository是private的，则需要在URL的链接中插入账号密码等的信息
+
 
 ###Add External Libraries（以GVRP为例）
 
