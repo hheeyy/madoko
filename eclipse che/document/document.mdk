@@ -15,6 +15,9 @@ Eclipse Che是一款基于浏览器的在线集成开发环境（IDE），提供
 
 !login
 
+![login]
+
+[login]: images/login.png "login" { width:auto; max-width:90% }
 
 # Eclipse Che 界面
 
