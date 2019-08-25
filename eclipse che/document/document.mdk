@@ -1,0 +1,165 @@
+Title         : Eclipse Che 使用教程
+Author        : Heyi
+Logo          : True
+Package       : [UTF8]ctex
+
+[TITLE]
+***
+
+# Eclipse Che 概述 
+
+Eclipse Che是一款基于浏览器的在线集成开发环境（IDE），提供多种语言支持，如Java、C++、Python、MySQL等，本教程主要以Java语言为例，来解决VRP（Vehicle Routing Problem）及其变种问题。
+
+# 注册登录
+首先开启浏览器访问网址：<http://120.55.69.180:8080> ，注册后显示如下登录界面，输入账号密码进行登录。
+
+!login
+
+
+# Eclipse Che 界面
+
+登录后显示eclipse che界面。
+
+
+!eclipse che
+
+
+- *Organizations*
+
+由管理者创建一个小组，由管理者和若干组员组成。管理员可以设置该小组工作空间数量、可同时运行的工作空间数量以及该小组内工作空间可使用的最大内存等。
+
+组员可以与管理者共享工作空间，管理者可以设置组员对工作空间的使用权限，也有权限查看组员的工作空间，进行共享代码，并且可以进行代码的编辑、修改和调试等。
+
+- *创建一个Workspace（以Java为例）*
+
+Workspace是程序储存和运行调试的地方，类似于本地的eclipse。创建一个属于自己的workspace的步骤如下：
+
+首先点击左侧菜单的Workspace，进入如下页面，可以看到此时已有两个工作空间存在及其一些属性。
+
+
+!workspace1
+
+
+接着点击 Add Workspace，出现如下页面。可以看到，workspace的名字用中文会报错，所以workspace的命名需要使用英文进行命名。在ORGANIZATION下拉框处可以选择workspace建立在哪一个小组下面，可选择与小组中的成员进行共享；该教程以Java语言为主，所以SELECT STACK处选择Java环境；RAM处可以调整该workspace的内存大小，默认是2GB；PROJECTS处可以预先在新建的workspace中添加或引入项目，也可以在建立workspace之后再进行这一操作，具体操作在4.3节中详述。
+最后点击右上角或者是最下方的CREAT键，一个workspace就成功创建了。
+
+!creat1
+
+
+
+!creat2
+
+
+
+!creat5
+
+
+
+这里要注意的一点是，如果希望自己所创建的workspace与其他人进行共享，那么还需要进行如下操作。
+
+在菜单栏选择Workspace，可以看到在该账号上之前已经有两个workspace存在，选择新建立的workspace（test）；或者直接在上一步workspace创建成功的界面上点击Edit键，进入编辑模式。
+
+!creat3
+
+
+!creat4
+
+
+点击Share，再点击Add Developer，勾选要进行分享的账号之后，点击Share后就完成了工作空间的分享。在PERMISSIONS下可以看到share的账户对该工作空间的使用权限，如是否可以对该工作空间的内容进行更改等。
+
+
+!creat6
+
+
+!creat7
+
+
+!creat8
+
+
+#Workspace（以Java为例）
+
+Workspace是程序存放和运行调试的空间，类似于本地的eclipse。
+在左侧点击进入新建立的test工作空间。
+
+##Workspace窗口
+
+首先我们来看一下workspace的界面，界面由多个窗口组成，
+
+- 菜单栏
+
+- 工具栏
+
+- 主界面
+
+- 控制台
+
+##Workspace菜单
+
+- Workspace
+
+*Import Project*    从外部引入一个项目
+
+*Creat Project*     建立一个新项目
+
+*Download as ZIP*   将当前项目存为本地压缩包（ZIP格式）
+
+*Stop*              停止运行当前工作空间
+
+*Status*            当前工作空间运行情况
+
+*Creat Factory*     ？
+
+- Project
+
+*New*   新建文件夹或者各种类型的文件
+
+*Upload File*   上传文件；选中文件夹后才会显示可点击
+
+*Upload Folder*   上传文件夹。这里要注意的一点是，上传的文件夹必须是以压缩包.ZIP的格式，如果是.RAR格式的压缩包则不能成功上传
+
+*Configue Classpath*   Java build Path,向当前项目中添加JAR包或是添加文件夹Folder
+
+- run
+
+运行当前类。注意这里要选择有主类的class后运行，选择不含有主类的class运行会出错。
+
+- debug
+
+对程序进行调试。
+
+- Manage commands
+  
+  Linux
+
+##如何开始写一个程序
+
+###Create a project
+
+Workspace --> Creat Project --> 
+
+###Import a project
+
+Workspace --> Import Project --> 粘贴github的URL
+
+假如github的repository是private的，则需要在URL的链接中插入账号密码等的信息
+
+
+###Add External Libraries（以GVRP为例）
+
+GVRP包索引概览，包括
+<http://120.55.69.180:8080/docs/index.html>
+  
+
+- 
+
+Madoko is a fast markdown processor for writing professional articles
+with a focus on simplicity and plain text readability.
+
+* Read the [reference manual].
+* Explore the upper-right toolbox menu to discover how Markdown works. 
+* `Alt-Q` reformats the current paragraph.
+
+Enjoy!
+
+[reference manual]: http://research.microsoft.com/en-us/um/people/daan/madoko/doc/reference.html  "Madoko reference manual"
