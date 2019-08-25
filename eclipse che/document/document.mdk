@@ -23,9 +23,11 @@ Eclipse Che是一款基于浏览器的在线集成开发环境（IDE），提供
 
 登录后显示eclipse che界面。
 
-
 !eclipse che
 
+![eclipse che]
+
+[eclipse che]: images/eclipse-che.png "eclipse che" { width:auto; max-width:90% }
 
 - *Organizations*
 
@@ -39,22 +41,31 @@ Workspace是程序储存和运行调试的地方，类似于本地的eclipse。�
 
 首先点击左侧菜单的Workspace，进入如下页面，可以看到此时已有两个工作空间存在及其一些属性。
 
-
 !workspace1
 
+![workspace1]
+
+[workspace1]: images/workspace1.png "workspace1" { width:auto; max-width:90% }
 
 接着点击 Add Workspace，出现如下页面。可以看到，workspace的名字用中文会报错，所以workspace的命名需要使用英文进行命名。在ORGANIZATION下拉框处可以选择workspace建立在哪一个小组下面，可选择与小组中的成员进行共享；该教程以Java语言为主，所以SELECT STACK处选择Java环境；RAM处可以调整该workspace的内存大小，默认是2GB；PROJECTS处可以预先在新建的workspace中添加或引入项目，也可以在建立workspace之后再进行这一操作，具体操作在4.3节中详述。
 最后点击右上角或者是最下方的CREAT键，一个workspace就成功创建了。
 
 !creat1
 
+![creat1]
+
+[creat1]: images/creat1.png "creat1" { width:auto; max-width:90% }
 
 
 !creat2
 
 
+[creat2]: images/creat2.png "creat2" { width:auto; max-width:90% }
+
 
 !creat5
+
+[creat5]: images/creat5.png "creat5" { width:auto; max-width:90% }
 
 
 
