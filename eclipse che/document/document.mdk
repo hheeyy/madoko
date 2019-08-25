@@ -59,11 +59,14 @@ Workspace是程序储存和运行调试的地方，类似于本地的eclipse。�
 
 !creat2
 
+![creat2]
 
 [creat2]: images/creat2.png "creat2" { width:auto; max-width:90% }
 
 
 !creat5
+
+![creat5]
 
 [creat5]: images/creat5.png "creat5" { width:auto; max-width:90% }
 
@@ -74,9 +77,18 @@ Workspace是程序储存和运行调试的地方，类似于本地的eclipse。�
 在菜单栏选择Workspace，可以看到在该账号上之前已经有两个workspace存在，选择新建立的workspace（test）；或者直接在上一步workspace创建成功的界面上点击Edit键，进入编辑模式。
 
 !creat3
+![creat3]
+
+[creat3]: images/creat3.png "creat3" { width:auto; max-width:90% }
+
 
 
 !creat4
+
+![creat4]
+
+[creat4]: images/creat4.png "creat4" { width:auto; max-width:90% }
+
 
 
 点击Share，再点击Add Developer，勾选要进行分享的账号之后，点击Share后就完成了工作空间的分享。在PERMISSIONS下可以看到share的账户对该工作空间的使用权限，如是否可以对该工作空间的内容进行更改等。
@@ -84,11 +96,22 @@ Workspace是程序储存和运行调试的地方，类似于本地的eclipse。�
 
 !creat6
 
+![creat6]
+
+[creat6]: images/creat6.png "creat6" { width:auto; max-width:90% }
 
 !creat7
 
+![creat7]
+
+[creat7]: images/creat7.png "creat7" { width:auto; max-width:90% }
+
 
 !creat8
+
+![creat8]
+
+[creat8]: images/creat8.png "creat8" { width:auto; max-width:90% }
 
 
 #Workspace（以Java为例）
