@@ -194,7 +194,9 @@ Workspace --> Import Project --> 在URL处粘贴github某一具体项目的链�
 [github]: images/github.png "github" { width:auto; max-width:90% }
 
 
-假如github的repository是private的，则需要在URL的链接中插入账号密码等的信息
+假如github的repository是private的，则需要在URL的链接中插入账号密码等的信息，格式如下：
+
+*http://username:password@github.com/username/respository.git*
 
 
 ###Add External Libraries（以GVRP为例）
