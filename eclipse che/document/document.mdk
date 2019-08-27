@@ -211,6 +211,570 @@ GVRP包索引概览，包括
 
 GVRP包
 
+- CVRP实现代码
+
+```java
+  
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import nju.lzx.Constraint.*;
+import nju.lzx.Data.*;
+import nju.lzx.Algorithm.*;
+import nju.lzx.Interface.*;
+import nju.lzx.LocalSearchOperator.*;
+import nju.lzx.InitialSolutionOperator.*;
+import nju.lzx.Utility.*;
+import nju.lzx.Route.*;
+import nju.lzx.LabelSetting.*;
+
+
+// TODO: Auto-generated Javadoc
+/**
+ * Capacitied Vehicle Routing Problem (CVRP)求解示例。 (目标是最小化总距离。).
+ */
+public class CVRP {
+
+	
+	/**
+	 * CVRP算例。
+	 */
+	public static class InstanceCVRP extends Instance{
+		
+		/*
+           这是最简单的VRP问题，是基础的Instance，不需要额外的变量；如果需要额外的变量则在这里进行声明
+		 */
+		
+	}
+	
+	/**
+	 * 主函数。.
+	 *
+	 * @param args 参数。
+	 * @throws IOException IO异常。
+	 */
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+		double t1 = System.nanoTime();
+        // PrintStream ps = new PrintStream(new FileOutputStream("../result/log.txt"));//文件重定向，将在控制台输出的信息另存为txt文件，便于查看结果
+        //System.setOut(ps);
+		Instance inst = load_instance("../data/cvrp/vrpnc1.txt");//加载算例
+		double t2 = System.nanoTime();
+		double load_instance_time = (t2 - t1) / 1e9;
+		////设置模式参数
+		inst.parameter.Mode.multi_trip_enable = false;//中途不可重新回到depot再次出发
+		inst.parameter.Mode.multi_thread_enable = false;
+		System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "8");
+		//设置初始解参数
+		inst.parameter.InitialSolution.log_print = false;
+		//设置禁忌搜索参数
+		inst.parameter.TabuSearch.maximum_iteration = 1000;
+		inst.parameter.TabuSearch.maximum_tabu_tenure = 500;
+		inst.parameter.TabuSearch.tenure_decay_rate = 0.99;
+		inst.parameter.TabuSearch.mininum_tabu_tenure = 10;
+		inst.parameter.TabuSearch.mininum_shake_tenure = 300;
+		inst.parameter.TabuSearch.minimum_shake_iteration = 100;
+		inst.parameter.TabuSearch.label_setting_tenure = 500;
+		inst.parameter.TabuSearch.log_print = false;
+		inst.parameter.TabuSearch.log_detail = false;
+		//设置算子参数
+		inst.parameter.Operator.insertion_prune_threshhold = 1e6;
+		inst.parameter.Operator.exchange_prune_threshhold = 1e6;
+		inst.parameter.Operator.cross_prune_threshhold = 1e6;
+		inst.parameter.Operator.remove_prune_threshhold = -1e6;
+		inst.parameter.Operator.route_cross_threshhold = 100;
+		
+		
+		//构造约束条件
+		Constraint[] cnts = new Constraint[2];
+		MinimizeDistance.ConstraintData dist_dat = new MinimizeDistance.ConstraintData(inst.d, 1);//每公里行驶成本设为1,则将距离作为目标函数
+		cnts[0] = new MinimizeDistance(dist_dat, 1);
+		
+		CapacityConstraint.ConstraintData capw_dat = new CapacityConstraint.ConstraintData(inst.q, inst.Q);
+		cnts[1] = new CapacityConstraint(capw_dat, true, 1000);//将该约束设为松弛,惩罚系数设为1000
+		
+		//构造需要访问的节点集合
+		ArrayList<Atr> atrs = new ArrayList<Atr>();
+		for(int i = 1; i < inst.n; i++){
+			atrs.add(new Atr(i));
+		}
+		boolean[] exc = new boolean[inst.n];
+		for(int i = 1; i < inst.n; i++)
+			exc[i] = true;
+		
+		//构造算法算子, 禁忌搜索中使用的算子,可以选择一个到多个
+		Operator[] operators = new Operator[3];
+		double[] coefs = new double[3];
+		operators[0] = new RelocateBase(inst, exc);
+		coefs[0] = 1;
+		operators[1] = new ExchangeBaseDeep(inst, exc);
+		coefs[1] = 1;
+		operators[2] = new CrossBase(inst, exc);
+		coefs[2] = 1;       
+    
+	
+	    //构造初始解,贪心算法
+	    InsertBase insert = new InsertBase(inst, cnts);//构造初始解的插入算子
+		Greedy greedy = new Greedy(inst, insert);//构造初始解
+		
+		ArrayList<Route> s = greedy.generate(atrs);
+		s = toDeep(inst, s);
+		
+		System.out.println(greedy.toString(s));//将初始解的路径转化为子路径,为了使用ExchangeBaseDeep算子
+		greedy.check(s, true, exc);
+		System.out.println("feasibility of the initial solution>>>" + greedy.is_feasible(s) + "\t" + s.size() + "\t" + greedy.get_total_cost(s));
+		double t3 = System.nanoTime();
+		double initial_construct_time = (t3 - t2) / 1e9;
+		System.out.println("load instance time>>>" + load_instance_time + "\t initial construct time>>>" + initial_construct_time);
+		//System.exit(0);
+		 
+		
+		//优化解的成本
+		TabuSearch tabu = new TabuSearch(inst, operators, coefs, null);
+		ArrayList<Route> bs = tabu.solve(s);
+
+		tabu.check(bs, true, exc);
+		System.out.println("feasibility of the solution>>>" + tabu.is_feasible(bs) + "\t" + bs.size() + "\t" + tabu.get_total_cost(bs));
+		//System.out.println(tabu.toString(bs));
+		double t4 = System.nanoTime();
+		System.out.println("computation time>>>" + (t4 - t1) / 1e9);
+		inst.statistics.print();
+		write_solution("../result/vrpnc1.txt", bs, (t4 - t1) / 1e9);
+	}
+	
+	/**
+	 * 加载算例。.
+	 *
+	 * @param node_file 节点信息文件路径。
+	 * @param vehicle_file 车辆信息文件路径。
+	 * @param dist_file 距离信息文件路径。
+	 * @return 返回算例。
+	 * @throws FileNotFoundException IO异常。
+	 */
+	public static Instance load_instance(String node_file) throws FileNotFoundException{
+		//node information
+		Instance inst = new Instance();
+		//inst.m = _m;
+		Scanner cin = new Scanner(new BufferedReader(new FileReader(node_file)));
+		inst.n = cin.nextInt() + 1;
+		inst.Q = cin.nextDouble();
+		//inst.T = _T;
+		inst.lng = new double[inst.n];
+		inst.lat = new double[inst.n];
+		inst.q = new double[inst.n];
+		inst.s = new double[inst.n];
+		inst.T = cin.nextDouble();
+		//cin.next();
+        double st = cin.nextDouble();
+		for(int i = 0; i < inst.n; i++){
+			inst.lng[i] = cin.nextDouble();
+			inst.lat[i] = cin.nextDouble();
+			if(i > 0){
+				inst.q[i] = cin.nextDouble();
+				inst.s[i] = st;
+			}
+		}
+		cin.close();
+		inst.d = new double[inst.n][inst.n];
+		inst.t = new double[inst.n][inst.n];
+		for(int i = 0; i < inst.n; i++){
+			for(int j = i + 1; j < inst.n; j++){
+				inst.d[i][j] = inst.d[j][i] = inst.t[i][j] = inst.t[j][i] = 
+						Math.sqrt((inst.lng[i] - inst.lng[j]) * (inst.lng[i] - inst.lng[j]) + (inst.lat[i] - inst.lat[j]) * (inst.lat[i] - inst.lat[j]));
+			}
+		}
+		return inst;
+	}
+	
+	/**
+	 * 将一个普通的解转换成一个可以被ExchangeBaseDeep和RelocateBseIntra操作的解，即路径中包含子路径。.
+	 *
+	 * @param inst 算例信息。
+	 * @param s 当前解。
+	 * @return 返回新的解。
+	 */
+	public static ArrayList<Route> toDeep(Instance inst, ArrayList<Route> s){
+		ArrayList<Route> ns = new ArrayList<Route>();
+		for(int i = 0; i < s.size(); i++){
+			Route r = s.get(i);
+			Reference ref = r.get_reference();
+			Route nr = new RouteBase(inst, ref.len, ref.seq, false, true);
+			Constraint[] _cnts = r.get_constraints();
+			Constraint[] _cnts2 = new Constraint[_cnts.length];
+			for(int j = 0; j < _cnts.length; j++){
+				_cnts2[j] = _cnts[j].copy(nr.get_reference());
+			}
+			nr.add_constraints(_cnts2);
+			nr.check();
+			ns.add(nr);
+		}
+		return ns;
+	}
+	
+	
+	
+	/**
+	 * 将解保存到文件。.
+	 *
+	 * @param file 文件名称。
+	 * @param s 当前解。
+	 * @throws IOException I/O异常。
+	 */
+	public static void write_solution(String file, ArrayList<Route> s, double time) throws IOException{
+		BufferedWriter out = new BufferedWriter(new FileWriter(file));
+		double total_cost = 0;
+		for(int i = 0; i < s.size(); i++){
+			total_cost += s.get(i).get_total_cost();
+		}
+		out.write(s.size() + " " + total_cost + " " + time);
+		out.newLine();
+		for(int i = 0; i < s.size(); i++){
+			Route r = s.get(i);
+			for(int j = 0; j < r.get_size(); j++){
+				int id = r.get_node(j);
+				out.write(id + " ");
+			}
+			out.newLine();
+		}
+		out.close();
+	}
+	
+	/**
+	 * 从文件中加载解。.
+	 *
+	 * @param inst 算例信息。
+	 * @param cnts 问题约束条件集合。
+	 * @param path 解的文件路径。
+	 * @return the array list
+	 * @throws FileNotFoundException the file not found exception
+	 */
+	public static ArrayList<Route> load_solution(Instance inst, Constraint[] cnts, String path) throws FileNotFoundException{
+		ArrayList<Route> rs = new ArrayList<Route>();
+		Scanner cin = new Scanner(new BufferedReader(new FileReader(path)));
+		cin.nextLine();
+		while(cin.hasNextLine()){
+			String line = cin.nextLine();
+			String[] subs = line.split(" ");
+			int[] seq = new int[subs.length];
+			for(int i = 1; i < subs.length; i++){
+				seq[i] = Integer.parseInt(subs[i]);
+			}
+			RouteBase r = new RouteBase(inst, subs.length, seq, false, true);
+			Constraint[] _cnts = new Constraint[cnts.length];
+			for(int j = 0; j < cnts.length; j++){
+				_cnts[j] = cnts[j].copy(r.get_reference());
+			}
+			r.add_constraints(_cnts);
+			rs.add(r);
+		}
+		cin.close();
+		return rs;
+	}
+}
+
+```
+- VRPTW实现代码
+
+```java
+  
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import nju.lzx.Constraint.*;
+import nju.lzx.Data.*;
+import nju.lzx.Algorithm.*;
+import nju.lzx.Interface.*;
+import nju.lzx.LocalSearchOperator.*;
+import nju.lzx.InitialSolutionOperator.*;
+import nju.lzx.Utility.*;
+import nju.lzx.Route.*;
+import nju.lzx.LabelSetting.*;
+
+
+// TODO: Auto-generated Javadoc
+/**
+ * Vehicle Routing Problem with Time Windows(VRPTW)求解示例。 (目标是最小化总行驶距离。).
+ */
+public class VRPTW {
+
+	
+	/**
+	 * VRPTW算例。
+	 */
+	public static class InstanceVRPTW extends Instance{
+
+		
+	}
+	
+	/**
+	 * 主函数。.
+	 *
+	 * @param args 参数。
+	 * @throws IOException IO异常。
+	 */
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+		double t1 = System.nanoTime();
+		String name = "c102";
+		String file = "../data/Solomon/" + name + ".txt";
+		Instance inst = load_instance(file, 100);
+		double t2 = System.nanoTime();
+		double load_instance_time = (t2 - t1) / 1e9;
+		////设置模式参数
+		inst.parameter.Mode.multi_trip_enable = true;
+		inst.parameter.Mode.multi_thread_enable = false;
+		System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "8");
+		//设置初始解参数
+		inst.parameter.InitialSolution.log_print = false;
+		//设置禁忌搜索参数
+		inst.parameter.TabuSearch.maximum_iteration = 1000;
+		inst.parameter.TabuSearch.maximum_tabu_tenure = 500;
+		inst.parameter.TabuSearch.tenure_decay_rate = 0.99;
+		inst.parameter.TabuSearch.mininum_tabu_tenure = 10;
+		inst.parameter.TabuSearch.mininum_shake_tenure = 300;
+		inst.parameter.TabuSearch.minimum_shake_iteration = 100;
+		inst.parameter.TabuSearch.label_setting_tenure = 500;
+		inst.parameter.TabuSearch.log_print = false ;
+		inst.parameter.TabuSearch.log_detail = false;
+		//设置算子参数
+		inst.parameter.Operator.insertion_prune_threshhold = 1e6;
+		inst.parameter.Operator.exchange_prune_threshhold = 1e6;
+		inst.parameter.Operator.cross_prune_threshhold = 1e6;
+		inst.parameter.Operator.remove_prune_threshhold = -1e6;
+		inst.parameter.Operator.route_cross_threshhold = 100;
+		//构造约束条件
+		Constraint[] cnts = new Constraint[3];
+		MinimizeDistance.ConstraintData dist_dat = new MinimizeDistance.ConstraintData(inst.d, 1);
+		cnts[0] = new MinimizeDistance(dist_dat, 1);
+		
+		CapacityConstraint.ConstraintData capw_dat = new CapacityConstraint.ConstraintData(inst.q, inst.Q);
+		cnts[1] = new CapacityConstraint(capw_dat, true, 500);
+		
+		TimeWindowConstraint.ConstraintData tw_dat = new TimeWindowConstraint.ConstraintData(inst.e, inst.l, inst.t, inst.s);
+		cnts[2] = new TimeWindowConstraint(tw_dat, true, 500);
+		
+		//构造需要访问的节点集合
+		ArrayList<Atr> atrs = new ArrayList<Atr>();
+		for(int i = 1; i < inst.n; i++){
+			atrs.add(new Atr(i));
+		}
+		boolean[] exc = new boolean[inst.n];
+		for(int i = 1; i < inst.n; i++)
+			exc[i] = true;
+		
+		//构造算法算子
+		Operator[] operators = new Operator[3];
+		double[] coefs = new double[3];
+		operators[0] = new RelocateBase(inst, exc);
+		coefs[0] = 1;
+		operators[1] = new ExchangeBaseDeep(inst, exc);
+		coefs[1] = 1;
+		operators[2] = new CrossBase(inst, exc);
+		coefs[2] = 1;
+		
+		//构造初始解
+		InsertBase insert = new InsertBase(inst, cnts);//构造初始解的插入算子
+		Greedy greedy = new Greedy(inst, insert);//构造初始解
+		
+		ArrayList<Route> s = greedy.generate(atrs);
+		s = toDeep(inst, s);
+		
+		//ArrayList<Route> s = load_solution(inst, cnts, "result/result.txt");
+		System.out.println(greedy.toString(s));
+		greedy.check(s, true, exc);
+		System.out.println("feasibility of the initial solution>>>" + greedy.is_feasible(s) + "\t" + s.size() + "\t" + greedy.get_total_cost(s));
+		double t3 = System.nanoTime();
+		double initial_construct_time = (t3 - t2) / 1e9;
+		System.out.println("load instance time>>>" + load_instance_time + "\t initial construct time>>>" + initial_construct_time);
+		//System.exit(0);
+		 
+		
+		//优化解的成本
+		TabuSearch tabu = new TabuSearch(inst, operators, coefs, null);
+		ArrayList<Route> bs = tabu.solve(s);
+
+		tabu.check(bs, true, exc);
+		System.out.println("feasibility of the solution>>>" + tabu.is_feasible(bs) + "\t" + bs.size() + "\t" + greedy.get_total_cost(bs));
+		//System.out.println(tabu.toString(bs));
+		double t4 = System.nanoTime();
+		System.out.println("computation time>>>" + (t4 - t1) / 1e9);
+		inst.statistics.print();
+		write_solution("../result/solomon/" + name +".txt", bs);
+	}
+	
+	/**
+	 * S 2 t.
+	 *
+	 * @param t the t
+	 * @return the double
+	 */
+	public static double s2t(String t){
+		String[] sub = t.split(":");
+		int hour = Integer.parseInt(sub[0]);
+		int min = Integer.parseInt(sub[1]);
+		if(hour == 0 && min == 0)
+			hour = 24;
+		return hour * 60 + min;
+	}
+
+	
+	/**
+	 * 加载算例。.
+	 *
+	 * @param node_file 节点信息文件路径。
+	 * @param vehicle_file 车辆信息文件路径。
+	 * @param dist_file 距离信息文件路径。
+	 * @return 返回算例。
+	 * @throws FileNotFoundException IO异常。
+	 */
+	public static Instance load_instance(String path, int _n) throws FileNotFoundException{
+		Instance inst = new Instance();
+		Scanner cin = new Scanner(new BufferedReader(new FileReader(path)));
+		inst.name = cin.next();
+		for(int i = 0; i < 3; i++){
+			cin.next();
+		}
+		inst.m = cin.nextInt();//车辆数目，Solomon中有提供。
+		inst.Q = cin.nextDouble();
+		for(int i = 0; i < 12; i++){
+			cin.next();
+		}
+		inst.n = _n + 1;
+		inst.s = new double[inst.n];
+		inst.e = new double[inst.n];
+		inst.l = new double[inst.n];
+		inst.q = new double[inst.n];
+		inst.lng = new double[inst.n];
+		inst.lat = new double[inst.n];
+		for(int i = 0; i < inst.n; i++){
+			cin.next();
+			inst.lng[i] = cin.nextDouble();
+			inst.lat[i] = cin.nextDouble();
+			inst.q[i] = cin.nextDouble();
+			inst.e[i] = cin.nextDouble();
+			inst.l[i] = cin.nextDouble();
+			inst.s[i] = cin.nextDouble();
+		}
+		cin.close();
+		inst.d = new double[inst.n][inst.n];
+		inst.t = new double[inst.n][inst.n];
+		for(int i = 0; i < inst.n; i++){
+			for(int j = i + 1; j < inst.n; j++){
+				inst.d[i][j] = inst.d[j][i] = inst.t[i][j] = inst.t[j][i] = 
+						Math.sqrt((inst.lng[i] - inst.lng[j]) * (inst.lng[i] - inst.lng[j]) + (inst.lat[i] - inst.lat[j]) * (inst.lat[i] - inst.lat[j]));
+			}
+		}
+		return inst;
+	}
+	
+	/**
+	 * 将一个普通的解转换成一个可以被ExchangeBaseDeep和RelocateBseIntra操作的解，即路径中包含子路径。.
+	 *
+	 * @param inst 算例信息。
+	 * @param s 当前解。
+	 * @return 返回新的解。
+	 */
+	public static ArrayList<Route> toDeep(Instance inst, ArrayList<Route> s){
+		ArrayList<Route> ns = new ArrayList<Route>();
+		for(int i = 0; i < s.size(); i++){
+			Route r = s.get(i);
+			Reference ref = r.get_reference();
+			Route nr = new RouteBase(inst, ref.len, ref.seq, false, true);
+			Constraint[] _cnts = r.get_constraints();
+			Constraint[] _cnts2 = new Constraint[_cnts.length];
+			for(int j = 0; j < _cnts.length; j++){
+				_cnts2[j] = _cnts[j].copy(nr.get_reference());
+			}
+			nr.add_constraints(_cnts2);
+			nr.check();
+			ns.add(nr);
+		}
+		return ns;
+	}
+	
+	
+	
+	/**
+	 * 将解保存到文件。.
+	 *
+	 * @param file 文件名称。
+	 * @param s 当前解。
+	 * @throws IOException I/O异常。
+	 */
+	public static void write_solution(String file, ArrayList<Route> s) throws IOException{
+		BufferedWriter out = new BufferedWriter(new FileWriter(file));
+		double total_cost = 0;
+		for(int i = 0; i < s.size(); i++){
+			total_cost += s.get(i).get_total_cost();
+		}
+		out.write(s.size() + " " + total_cost);
+		out.newLine();
+		for(int i = 0; i < s.size(); i++){
+			Route r = s.get(i);
+			for(int j = 0; j < r.get_size(); j++){
+				int id = r.get_node(j);
+				out.write(id + " ");
+			}
+			out.newLine();
+		}
+		out.close();
+	}
+	
+	/**
+	 * 从文件中加载解。.
+	 *
+	 * @param inst 算例信息。
+	 * @param cnts 问题约束条件集合。
+	 * @param path 解的文件路径。
+	 * @return the array list
+	 * @throws FileNotFoundException the file not found exception
+	 */
+	public static ArrayList<Route> load_solution(Instance inst, Constraint[] cnts, String path) throws FileNotFoundException{
+		ArrayList<Route> rs = new ArrayList<Route>();
+		Scanner cin = new Scanner(new BufferedReader(new FileReader(path)));
+		cin.nextLine();
+		while(cin.hasNextLine()){
+			String line = cin.nextLine();
+			String[] subs = line.split(" ");
+			int[] seq = new int[subs.length];
+			for(int i = 1; i < subs.length; i++){
+				seq[i] = Integer.parseInt(subs[i]);
+			}
+			RouteBase r = new RouteBase(inst, subs.length, seq, false, true);
+			Constraint[] _cnts = new Constraint[cnts.length];
+			for(int j = 0; j < cnts.length; j++){
+				_cnts[j] = cnts[j].copy(r.get_reference());
+			}
+			r.add_constraints(_cnts);
+			rs.add(r);
+		}
+		cin.close();
+		return rs;
+	}
+
+
+}
+  
+```
+
+- 增加一个约束条件（FCM-VRP）
+
+该问题是考虑燃料消耗的车辆路径问题，和最基本的VRP问题之间最大的区别是
+
 ```java
     PrintStream ps = new PrintStream(new FileOutputStream("../result/log.txt"));
     //文件重定向，将在控制台输出的信息另存为txt文件，便于查看结果
