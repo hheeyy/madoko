@@ -203,13 +203,17 @@ Workspace --> Import Project --> 在URL处粘贴github某一具体项目的链�
 
 - index
 
-GVRP包索引概览，包括
+GVRP包索引概览，包括各个程序包的说明以及使用方法。
 
 <http://120.55.69.180:8080/docs/index.html>
 
-**使用该jar包求解VRP及其变种问题的框架**
+- 使用GVRP包求解VRP及其变种问题的框架
 
-GVRP包
+![frame1]
+
+[frame1]: images/frame1.jpeg "frame1" { width:auto; max-width:100% }
+
+
 
 - CVRP实现代码
 
