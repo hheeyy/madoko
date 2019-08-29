@@ -239,18 +239,18 @@ GVRP包索引概览，包括各个程序包的说明以及使用方法。
 
 基础VRP问题，比如CVRP、VRPTW问题，可以直接使用GVRP包中的Instance类，Instance类中提供了基础VRP问题所需要的基本数据。如果是VRP变种问题，比如EVRP(Electric Vehicle Routing Problem)问题,则需要定义一些特殊变量，比如电动车的电池容量、最长行驶距离等，此时就需要在继承基础Instance类的基础之上，实现该特殊问题的InstanceVariant类。
 
-在确定该VRP问题需要的算例变量及数据之后，需要在eclipse che 中实现加载算例数据的函数。不同算例的格式可能是不一样的，所以应该根据算例的特性来对加载算例函数（load_Instance()）进行适当的修改。
+在确定该VRP问题需要的算例变量及数据之后，需要在eclipse che中实现加载算例数据的函数。不同算例的格式可能是不一样的，所以应该根据算例的特性来对加载算例函数（load_Instance()）进行适当的修改。
 
 **第二步：确定目标函数以及约束条件**
 
 解决VRP问题首先要明确目标函数是什么，是最小化行驶距离，最小化总成本，最大化收益，或者是使策略中使用的车辆数目最少等等。目标函数不同，那么相同的解的质量也不同，算法优化的方向也会不同。
 
-其次，要确定该问题的约束条件有哪些，以及该约束条件是否可以松弛（relax）。约束条件松弛的意思是，在构造解及优化解的过程中可以违反该约束条件，但是得相应付出与违反值成比的惩罚成本，违反的值越大，惩罚成本越高，惩罚成本与目标函数值用于评判一个解的优劣。一般而言，松弛的约束条件越多，能够得到的解越优，但是松弛条件多，邻域搜索空间变大，同等迭代次数情况下，相应的计算时间也会更大。另外，松弛条件越多，得不到可行最优解的概率也会越高。因此，要视情况而定约束条件是否进行松弛。
+其次，要确定该问题的约束条件有哪些，以及该约束条件是否可以松弛（relax）。约束条件松弛的意思是，在构造解及优化解的过程中可以违反该约束条件，但是得相应付出与违反值成比的惩罚成本，违反的值越大，惩罚成本越高，惩罚成本与目标函数值用于评判一个解的优劣。一般而言，松弛的约束条件越多，能够得到的解越优，但是松弛条件多，邻域搜索空间变大，同等迭代次数情况下，相应的计算时间也会更大。另外，松弛条件越多，得不到可行最优解的概率也会越高。因此，约束条件是否进行松弛要视情况而定。
 
 
 **第三步：构造初始解**
 
-在GVRP包中构造初始解使用的是贪心（Greedy）算法，Greedy类适用的是只有一种车型的VRP问题，GreedyGeneral类适用于多车型多仓库的问题。在约束条件松弛的情况下，初始解不一定是可行解。在构造初始解时首先要先确定该VRP问题属于什么类型，事先选择合适的插入算子（在第四步中算子选择中有介绍），再选择贪心算法类型构造初始解。
+在GVRP包中构造初始解使用的是贪心（Greedy）算法，Greedy类适用的是只有一种车型的VRP问题，GreedyGeneral类适用于多车型多仓库的问题。在约束条件松弛的情况下，初始解不一定是可行解。在构造初始解时首先要先确定该VRP问题属于什么类型，事先选择合适的插入算子（在第四步中介绍），再选择贪心算法类型构造初始解。
 
 **第四步：选择算子**
 
@@ -258,16 +258,21 @@ GVRP包索引概览，包括各个程序包的说明以及使用方法。
 
 在构造初始解时，需要用到InitialSolutionOperator包中Insert算子，用于贪心算法构造初始解。该程序包中提供了基础VRP问题的插入算法（InsertBase）、Cluster问题的插入算法（InsertCluster）、EVRP（Electric Vehicle Routing Problem）的插入算法（InsertElectric）、PDP（Pickup and Delivery）问题的插入算法（InsertPD）以及SD（Split Delivery）问题的插入算法（InsertSD）。假如是其他VRP问题需要用到特殊的Insert算子，可以在eclipse che中重新写一个Insert类，在主类中调用该Insert类即可。
 
-使用TabuSearch优化解时，要选择邻域算子（LocalSearchOperator包）。在该程序包中主要提供三种类型的邻域算子，即Relocate、Exchange、Cross算子及它们的变种。这里要注意的一点是，在使用ExchangeBaseDeep和RelocateBaseIntra算子时，前提条件是解的路径中包含子路径（子路径即该路径除去其中任意一个客户的路径的集合）。在eclipse che中需要实现将初始解转化为包含子路径的解的函数。
+使用TabuSearch优化解时，要选择邻域算子（LocalSearchOperator包）。在该程序包中主要提供三种类型的邻域算子，即Relocate、Exchange、Cross算子及它们的变种。这里需要注意的是，在使用ExchangeBaseDeep和RelocateBaseIntra算子时，前提条件是解中的路径必须包含子路径（子路径是当前路径中剔除任意一个客户点的路径集合）。因此使用这两个算子时，在eclipse che中要实现将初始解转化为包含子路径的解的函数。
 
+```java
+  s = toDeep(Inst,s);
+```
+
+最后一种是针对最小化车辆数目算法（VehicleReductionAlgo）所需要的算子（VehicleReductionOperator包）。其中包括对基础VRP问题的算子类及另外三种VRP变种问题的算子类。
 
 **第五步：选择优化算法**
 
-在GVRP包中提供了两种优化算法，分别是VehicleReductionAlgo和TabuSearch。前一种算法主要针对目标函数为最小化车辆数目的问题，后一种算法针对目标函数为其他类型的情况。
+在GVRP包中提供了两种优化算法，分别是VehicleReductionAlgo和TabuSearch。前一种算法主要针对目标函数为最小化车辆数目的问题，后一种算法针对目标函数为其他类型的情况。TabuSearch的情况比较简单，VehicleReductionAlgo算法的参数相较而言比较复杂。使用VehicleReductionAlgo时，要选择邻域搜索算法，并且
 
 **第六步：调整默认参数进一步优化解**
 
-参数的控制对于最终解的优劣的影响也是很大的。
+参数的控制对于最终解的优劣的影响是很大的。
 
 - CVRP实现代码
 
@@ -283,6 +288,7 @@ import java.io.PrintStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
 import nju.lzx.Constraint.*;
 import nju.lzx.Data.*;
 import nju.lzx.Algorithm.*;
@@ -307,7 +313,12 @@ public class CVRP {
 	public static class InstanceCVRP extends Instance{
 		
 		/*
-           这是最简单的VRP问题，是基础的Instance，不需要额外的变量，可以不需要这个类；如果需要额外的变量则在这里进行声明，并在加载算例时调用
+<!-- begin merge (remove this line to resolve the conflict) -->
+~ Begin Remote
+           这是最简单的VRP问题，是基础的Instance，不需要额外的变量；如果需要额外的变量则在这里进行声明
+~ End Remote
+           这是最简单的VRP问题，是基础的Instance，不需要额外的变量，可以不需要这个类；如果需要额外的变量则在这里进行声明，并在加载算例时使用
+<!-- end merge -->
 		 */
 		
 	}
