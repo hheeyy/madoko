@@ -186,11 +186,14 @@ Workspace是程序存放和运行调试的空间，类似于本地的eclipse。
 
     如果要修改run和debug执行语句，则可以在此处进行修改。
 
+
 ##如何开始写一个程序
 
 ###Create a project
 
 Workspace --> Creat Project --> 输入新的Project的名字 --> 创建成功
+
+
 
 ###Import a project
 
@@ -242,15 +245,18 @@ GVRP包索引概览，包括各个程序包的说明以及使用方法。
 
 解决VRP问题首先要明确目标函数是什么，是最小化行驶距离，最小化总成本，最大化收益，或者是使策略中使用的车辆数目最少等等。目标函数不同，那么相同的解的质量也不同，算法优化的方向也会不同。
 
-其次，要确定该问题的约束条件有哪些，以及该约束条件是否可以松弛（relax）。约束条件松弛的意思是，在构造解及优化解的过程中可以违反该约束条件，但是
-
+其次，要确定该问题的约束条件有哪些，以及该约束条件是否可以松弛（relax）。约束条件松弛的意思是，在构造解及优化解的过程中可以违反该约束条件，但是得相应付出与违反值成比的惩罚成本，违反的值越大，惩罚成本越高，惩罚成本与目标函数值用于评判一个解的优劣。一般而言，松弛的约束条件越多，能够得到的解越优，但是松弛条件多，邻域搜索空间变大，同等迭代次数情况下，相应的计算时间也会更多。另外，松弛条件越多
 
 
 **第三步：构造初始解**
 
-在GVRP包中构造初始解使用的是贪心（Greedy）算法，Greedy类适用的是只有一种车型的VRP问题，GreedyGeneral类适用于多车型多仓库的问题。
+在GVRP包中构造初始解使用的是贪心（Greedy）算法，Greedy类适用的是只有一种车型的VRP问题，GreedyGeneral类适用于多车型多仓库的问题。在约束条件松弛的情况下，初始解不一定是可行解。
 
 **第四步：选择算子**
+
+算子用于对当前解进行操作从而获得另一个解。GVRP包中提供了三种算法的算子集。
+
+在构造初始解时，需要用到InitialSolutionOperator包中Insert算子，用于贪心算法构造初始解。该程序包中提供了基础VRP问题的插入算法（InsertBase）、Cluster问题的插入算法（InsertCluster）、EVRP（Electric Vehicle Routing Problem）的插入算法（InsertElectric）、PDP（Pickup and Delivery）问题的插入算法（InsertPD）以及SD（Split Delivery）问题的插入算法（InsertSD）。假如是其他VRP问题需要用到特殊的Insert算子，可以在eclipse che中重新写一个Insert类，在主类中调用该Insert类即可。
 
 
 **第五步：选择优化算法**
