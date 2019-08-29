@@ -261,7 +261,7 @@ GVRP包索引概览，包括各个程序包的说明以及使用方法。
 使用TabuSearch优化解时，要选择邻域算子（LocalSearchOperator包）。在该程序包中主要提供三种类型的邻域算子，即Relocate、Exchange、Cross算子及它们的变种。这里需要注意的是，在使用ExchangeBaseDeep和RelocateBaseIntra算子时，前提条件是解中的路径必须包含子路径（子路径是当前路径中剔除任意一个客户点的路径集合）。因此使用这两个算子时，在eclipse che中要实现将初始解转化为包含子路径的解的函数。除此之外还注意的一点是，算子并不是越多解的质量就会更高，因此要合理选择算子并且调整算子的参数来提高解的质量。
 
 ```java
-  s = toDeep(Inst,s);
+  s = toDeep(Inst,s);//将初始解转化为含有子路径的解，需要在eclipse che中实现toDeep函数
 ```
 
 最后一种是针对最小化车辆数目算法（VehicleReductionAlgo）所需要的算子（VehicleReductionOperator包）。其中包括对基础VRP问题的算子类及另外三种VRP变种问题的算子类。
@@ -272,9 +272,58 @@ GVRP包索引概览，包括各个程序包的说明以及使用方法。
 
 **第六步：调整默认参数进一步优化解**
 
-参数的控制对于最终解的优劣的影响是很大的。
+参数的控制对于最终解的优劣的影响很大。GVRP包中主要控制以下几个类型的参数：
 
-- CVRP实现代码
+模式控制参数（ParaMode）：主要针对VRP问题的类型，如是否可以中途回到Depot，是否是PDP问题，是否是SD问题等。
+
+e.g.
+
+```java
+   inst.parameter.Mode.multi_trip_enable = false;//不允许中途回到depot
+   inst.parameter.Mode.pickup_delivery_enable = false;//非PDP问题
+```
+
+构造初始解参数（ParaInitialSolution）：使用贪心算法（Greedy）构造初始解时所需要的参数，包括是否打印构造初始解的过程等。
+
+e.g.
+
+```java
+   inst.parameter.InitialSolution.empty_route_num = 1;//每次往解中添加一条路径
+   inst.parameter.InitialSolution.log_print = false;//不输出构造初始解的过程
+   inst.parameter.InitialSolution.log_detail = false;//不输出构造初始解的详细信息
+```
+算子参数（ParaOperator）：控制算子对解进行操作时的参数。
+
+e.g.
+
+```java
+   inst.parameter.Operator.insertion_prune_threshhold = 1e6;//忽略插入操作阈值
+   inst.parameter.Operator.exchange_prune_threshhold = 1e6;//忽略交换操作阈值
+   inst.parameter.Operator.remove_prune_threshhold = -1e6;//忽略删除操作阈值
+```
+禁忌搜索参数（ParaTabuSearch）：对禁忌搜索的各个参数进行调整，如迭代次数，运行时长，禁忌周长等参数。
+
+e.g.
+
+```java
+   inst.parameter.TabuSearch.maximum_iteration = 1000;//最大迭代次数
+   inst.parameter.TabuSearch.log_print = true;//输出禁忌搜索操作过程信息
+```
+
+除了这几类参数之外，还有一些特殊问题的参数，如路径长度参数、减少车辆数目算法的参数及TimeDependent参数等。
+
+使用GVRP包解决VRP及其变种问题的流程如下图：
+
+***！流程图***
+
+
+### Eclipse Che具体应用
+
+这一节给出了三种不同VRP问题的GVRP包
+
+- **CVRP实现代码**
+
+CVRP问题是
 
 ```java
   
@@ -288,7 +337,6 @@ import java.io.PrintStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
 import nju.lzx.Constraint.*;
 import nju.lzx.Data.*;
 import nju.lzx.Algorithm.*;
@@ -298,7 +346,6 @@ import nju.lzx.InitialSolutionOperator.*;
 import nju.lzx.Utility.*;
 import nju.lzx.Route.*;
 import nju.lzx.LabelSetting.*;
-
 
 // TODO: Auto-generated Javadoc
 /**
@@ -312,13 +359,7 @@ public class CVRP {
 	 */
 	public static class InstanceCVRP extends Instance{
 		
-		/*
-<!-- begin merge (remove this line to resolve the conflict) -->
-~ Begin Remote
-           这是最简单的VRP问题，是基础的Instance，不需要额外的变量；如果需要额外的变量则在这里进行声明
-~ End Remote
-           这是最简单的VRP问题，是基础的Instance，不需要额外的变量，可以不需要这个类；如果需要额外的变量则在这里进行声明，并在加载算例时使用
-<!-- end merge -->
+		/*         这是最简单的VRP问题，是基础的Instance，不需要额外的变量，可以不需要这个类；如果需要额外的变量则在这里进行声明，并在加载算例时使用
 		 */
 		
 	}
@@ -335,6 +376,9 @@ public class CVRP {
         // PrintStream ps = new PrintStream(new FileOutputStream("../result/log.txt"));//文件重定向，将在控制台输出的信息另存为txt文件，便于查看结果
         //System.setOut(ps);
 		Instance inst = load_instance("../data/cvrp/vrpnc1.txt");//加载算例
+    /*
+    若是有特殊变量的算例，则在这里
+    */
 		double t2 = System.nanoTime();
 		double load_instance_time = (t2 - t1) / 1e9;
 		////设置模式参数
@@ -359,13 +403,11 @@ public class CVRP {
 		inst.parameter.Operator.cross_prune_threshhold = 1e6;
 		inst.parameter.Operator.remove_prune_threshhold = -1e6;
 		inst.parameter.Operator.route_cross_threshhold = 100;
-		
-		
+	
 		//构造约束条件
 		Constraint[] cnts = new Constraint[2];
 		MinimizeDistance.ConstraintData dist_dat = new MinimizeDistance.ConstraintData(inst.d, 1);//每公里行驶成本设为1,则将距离作为目标函数
 		cnts[0] = new MinimizeDistance(dist_dat, 1);
-		
 		CapacityConstraint.ConstraintData capw_dat = new CapacityConstraint.ConstraintData(inst.q, inst.Q);
 		cnts[1] = new CapacityConstraint(capw_dat, true, 1000);//将该约束设为松弛,惩罚系数设为1000
 		
@@ -388,9 +430,8 @@ public class CVRP {
 		operators[2] = new CrossBase(inst, exc);
 		coefs[2] = 1;       
     
-	
-	    //构造初始解,贪心算法
-	    InsertBase insert = new InsertBase(inst, cnts);//构造初始解的插入算子
+	  //构造初始解,贪心算法
+	  InsertBase insert = new InsertBase(inst, cnts);//构造初始解的插入算子
 		Greedy greedy = new Greedy(inst, insert);//构造初始解
 		
 		ArrayList<Route> s = greedy.generate(atrs);
@@ -402,13 +443,10 @@ public class CVRP {
 		double t3 = System.nanoTime();
 		double initial_construct_time = (t3 - t2) / 1e9;
 		System.out.println("load instance time>>>" + load_instance_time + "\t initial construct time>>>" + initial_construct_time);
-		//System.exit(0);
-		 
-		
+	
 		//优化解的成本
 		TabuSearch tabu = new TabuSearch(inst, operators, coefs, null);
 		ArrayList<Route> bs = tabu.solve(s);
-
 		tabu.check(bs, true, exc);
 		System.out.println("feasibility of the solution>>>" + tabu.is_feasible(bs) + "\t" + bs.size() + "\t" + tabu.get_total_cost(bs));
 		//System.out.println(tabu.toString(bs));
@@ -428,20 +466,16 @@ public class CVRP {
 	 * @throws FileNotFoundException IO异常。
 	 */
 	public static Instance load_instance(String node_file) throws FileNotFoundException{
-		//node information
 		Instance inst = new Instance();
-		//inst.m = _m;
 		Scanner cin = new Scanner(new BufferedReader(new FileReader(node_file)));
 		inst.n = cin.nextInt() + 1;
 		inst.Q = cin.nextDouble();
-		//inst.T = _T;
 		inst.lng = new double[inst.n];
 		inst.lat = new double[inst.n];
 		inst.q = new double[inst.n];
 		inst.s = new double[inst.n];
 		inst.T = cin.nextDouble();
-		//cin.next();
-        double st = cin.nextDouble();
+    double st = cin.nextDouble();
 		for(int i = 0; i < inst.n; i++){
 			inst.lng[i] = cin.nextDouble();
 			inst.lat[i] = cin.nextDouble();
@@ -487,8 +521,6 @@ public class CVRP {
 		return ns;
 	}
 	
-	
-	
 	/**
 	 * 将解保存到文件。.
 	 *
@@ -514,45 +546,12 @@ public class CVRP {
 		}
 		out.close();
 	}
-	
-	/**
-	 * 从文件中加载解。.
-	 *
-	 * @param inst 算例信息。
-	 * @param cnts 问题约束条件集合。
-	 * @param path 解的文件路径。
-	 * @return the array list
-	 * @throws FileNotFoundException the file not found exception
-	 */
-	public static ArrayList<Route> load_solution(Instance inst, Constraint[] cnts, String path) throws FileNotFoundException{
-		ArrayList<Route> rs = new ArrayList<Route>();
-		Scanner cin = new Scanner(new BufferedReader(new FileReader(path)));
-		cin.nextLine();
-		while(cin.hasNextLine()){
-			String line = cin.nextLine();
-			String[] subs = line.split(" ");
-			int[] seq = new int[subs.length];
-			for(int i = 1; i < subs.length; i++){
-				seq[i] = Integer.parseInt(subs[i]);
-			}
-			RouteBase r = new RouteBase(inst, subs.length, seq, false, true);
-			Constraint[] _cnts = new Constraint[cnts.length];
-			for(int j = 0; j < cnts.length; j++){
-				_cnts[j] = cnts[j].copy(r.get_reference());
-			}
-			r.add_constraints(_cnts);
-			rs.add(r);
-		}
-		cin.close();
-		return rs;
-	}
 }
 
 ```
-- VRPTW实现代码
+- **VRPTW实现代码(solomon)**
 
 ```java
-  
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -561,7 +560,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
 import nju.lzx.Constraint.*;
 import nju.lzx.Data.*;
 import nju.lzx.Algorithm.*;
@@ -584,8 +582,7 @@ public class VRPTW {
 	 * VRPTW算例。
 	 */
 	public static class InstanceVRPTW extends Instance{
-
-		
+  		
 	}
 	
 	/**
@@ -774,8 +771,6 @@ public class VRPTW {
 		return ns;
 	}
 	
-	
-	
 	/**
 	 * 将解保存到文件。.
 	 *
@@ -801,47 +796,361 @@ public class VRPTW {
 		}
 		out.close();
 	}
-	
-	/**
-	 * 从文件中加载解。.
-	 *
-	 * @param inst 算例信息。
-	 * @param cnts 问题约束条件集合。
-	 * @param path 解的文件路径。
-	 * @return the array list
-	 * @throws FileNotFoundException the file not found exception
-	 */
-	public static ArrayList<Route> load_solution(Instance inst, Constraint[] cnts, String path) throws FileNotFoundException{
-		ArrayList<Route> rs = new ArrayList<Route>();
-		Scanner cin = new Scanner(new BufferedReader(new FileReader(path)));
-		cin.nextLine();
-		while(cin.hasNextLine()){
-			String line = cin.nextLine();
-			String[] subs = line.split(" ");
-			int[] seq = new int[subs.length];
-			for(int i = 1; i < subs.length; i++){
-				seq[i] = Integer.parseInt(subs[i]);
-			}
-			RouteBase r = new RouteBase(inst, subs.length, seq, false, true);
-			Constraint[] _cnts = new Constraint[cnts.length];
-			for(int j = 0; j < cnts.length; j++){
-				_cnts[j] = cnts[j].copy(r.get_reference());
-			}
-			r.add_constraints(_cnts);
-			rs.add(r);
-		}
-		cin.close();
-		return rs;
-	}
-
-
 }
   
 ```
 
-- FCM-VRP
+- **添加一个约束的情况（FCM-VRP）**
 
-该问题是考虑燃料消耗的车辆路径问题，和最基本的VRP问题之间最大的区别是
+该问题是考虑燃料消耗的车辆路径问题，目标是最小化成本，成本中包括燃料消耗的成本。该问题和最基本的VRP问题之间最大的区别是在GVRP包中没有燃料消耗的约束条件类，因此需要在eclipse che中再写一个约束类（MinimizeFuelCost）。
+
+***MinimizeFuelCost.class***
+
+```java
+   
+import nju.lzx.Interface.Base;
+import nju.lzx.Interface.Constraint;
+import nju.lzx.Constraint.AbstractConstraint;
+import nju.lzx.Utility.Reference;
+
+public class MinimizeFuelCost extends AbstractConstraint implements Base {
+
+	/** 约束的问题数据。 */
+	protected ConstraintData dat;
+	
+	/** fq[i]：从仓库到第i个节点的需求之和。*/
+	protected double[] fq;
+	
+	/** bd[i]：从第i个结点回到仓库的距离。 */
+	protected double[] bd;
+	
+	
+	public static class ConstraintData{
+		
+		/** 节点需求。 */
+		public double[] q;
+		
+		/** 距离矩阵。 */
+		public double[][] d;
+		
+		/** 成本方程斜率。 */
+		public double a;
+		
+		
+		/** 成本方程截距。 */
+		public double b;
+		
+		public ConstraintData(double[][] _d, double[] _q, double _a, double _b){
+			d = _d;
+			q = _q;
+			a = _a;
+			b = _b;
+		}
+	}
+	
+
+	public MinimizeFuelCost(ConstraintData _dat, Reference _ref, double _coef){
+		super(_ref, false, _coef);
+		dat =  _dat;
+		fq = new double[ref.seq.length];
+		bd = new double[ref.seq.length];
+		name = "FUEL_COST_OBJECTIVE";
+		update();
+	}
+	
+
+	public MinimizeFuelCost(ConstraintData _dat, double _coef){
+		super(false, _coef);
+		dat = _dat;
+		fq = null;
+		bd = null;
+		name = "DISTANCE_OBJECTIVE";
+	}
+	
+
+	//************************************************************************************************
+	//*************************feasibility check functions--------------------------------------------
+	//************************************************************************************************
+	public int insert_feasible(int p, int id){
+		return 0;
+	}
+	
+
+	public int remove_feasible(int p){
+		return 0;
+	}
+	
+
+	public int cross_feasible(int p1, Base cnt, int p2){
+		return 0;
+	}
+	
+	public int exchange_feasible(int p1, Base cnt, int p2){
+		return 0;
+	}
+	
+
+	public int replace_feasible(int p, int id){
+		return 0;
+	}
+	
+	
+	//************************************************************************************************
+	//*************************cost computation functions---------------------------------------------
+	//************************************************************************************************
+	public double insert_cost(int p, int id){
+		int pre = ref.seq[p - 1];
+		int next = ref.seq[p];
+		double dist_delta = dat.d[pre][id] + dat.d[id][next] - dat.d[pre][next];
+		double to_depot = dat.d[id][next] + bd[p];
+		return coef * ((dat.a * fq[p - 1] + dat.b) * dist_delta + dat.a * dat.q[id] * to_depot);
+	}
+	
+	public double remove_cost(int p){
+		int pre = ref.seq[p - 1];
+		int id = ref.seq[p];
+		int next = ref.seq[p + 1];
+		double dist_delta = dat.d[pre][next] - dat.d[pre][id] - dat.d[id][next];
+		return coef * ((dat.a * fq[p - 1] + dat.b) * dist_delta - dat.a * dat.q[id] * bd[p]);
+	}
+	
+	public double exchange_cost(int p1, Base obj, int p2){
+		MinimizeFuelCost md = (MinimizeFuelCost) obj;
+		int pre1 = ref.seq[p1 - 1];
+		int id1 = ref.seq[p1];
+		int next1 = ref.seq[p1 + 1];
+		int pre2 = md.ref.seq[p2 - 1];
+		int id2 = md.ref.seq[p2];
+		int next2 = md.ref.seq[p2 + 1];
+		double dist_delta1 = dat.d[pre1][id2] + dat.d[id2][next1] 
+				- dat.d[pre1][id1] - dat.d[id1][next1];
+		double dist_delta2 = md.dat.d[pre2][id1] + md.dat.d[id1][next2]
+				- md.dat.d[pre2][id2] - md.dat.d[id2][next2];
+		
+		return coef * ((dat.a * fq[p1 - 1] + dat.b) * dist_delta1 + dat.a * dat.q[id2] * (dat.d[id2][next1] + bd[p1 + 1]) - dat.a * dat.q[id1] *  bd[p1])
+				+ md.coef * ((md.dat.a * md.fq[p2 - 1] + md.dat.b) * dist_delta2 + md.dat.a * md.dat.q[id1] * (md.dat.d[id1][next2] + md.bd[p2 + 1]) - md.dat.a * md.dat.q[id2] *  md.bd[p2]);
+				
+	}
+	
+	public double cross_cost(int p1, Base obj, int p2){
+		MinimizeFuelCost md = (MinimizeFuelCost) obj;
+		int id1 = ref.seq[p1];
+		int next1 = ref.seq[p1 + 1];
+		int id2 = md.ref.seq[p2];
+		int next2 = md.ref.seq[p2 + 1];
+		double dist_delta1 = dat.d[id1][next2] + md.bd[p2 + 1] - bd[p1];
+		double dist_delta2 = dat.d[id2][next1] + bd[p1 + 1] - md.bd[p2];
+		return coef * ((dat.a * fq[p1] + dat.b) * dist_delta1) + md.coef * ((md.dat.a * md.fq[p2] + md.dat.b) * dist_delta2);
+	}
+	
+	public double replace_cost(int p, int id){
+		int pre = ref.seq[p - 1];
+		int cur = ref.seq[p];
+		int next = ref.seq[p + 1];
+		double dist_delta = dat.d[pre][id] + dat.d[id][next] - dat.d[pre][cur] - dat.d[cur][next];
+		return coef * ((dat.a * fq[p - 1] + dat.b) * dist_delta + dat.a * dat.q[id] * (dat.d[id][next] + bd[p + 1]) - dat.a * dat.q[cur] * bd[p]);
+	}
+	
+	//************************************************************************************************
+	//*************************query functions-------------------------------------------------------
+	//************************************************************************************************
+	public boolean is_constraint(){
+		return false;
+	}
+	
+	//************************************************************************************************
+	//*************************functions to change the status of the objective------------------------
+	//************************************************************************************************
+	public void update(){
+		c = 0;
+		fq[0] = dat.q[ref.seq[0]];
+		for(int i = 0; i < ref.len - 1; i++){
+			int id = ref.seq[i];
+			int next = ref.seq[i + 1];
+			if(i > 0)
+				fq[i] = fq[i - 1] + dat.q[id];
+			c += coef * (dat.a * fq[i] + dat.b) * dat.d[id][next];
+		}
+		bd[ref.len - 1] = 0;
+		for(int i = ref.len - 2; i >= 0; i--){
+			bd[i] = bd[i + 1] + dat.d[ref.seq[i]][ref.seq[i + 1]];
+		}
+	}
+
+	public Constraint copy(Reference _ref){
+		return new MinimizeFuelCost(new ConstraintData(dat.d, dat.q, dat.a, dat.b), _ref, coef);
+	}
+}
+```
+
+然后需要在解决FCM-VRP问题的主类中调用MinimizeFuelCost类作为目标函数，代码如下：
+
+***Main.class***
+
+```java
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+import nju.lzx.Algorithm.Greedy;
+import nju.lzx.Algorithm.GreedyGeneral;
+import nju.lzx.Algorithm.TabuSearch;
+import nju.lzx.Constraint.CapacityConstraint;
+import nju.lzx.Constraint.MinimizeDistance;
+import nju.lzx.Constraint.MinimizeFixedCost;
+import nju.lzx.Data.Instance;
+import nju.lzx.InitialSolutionOperator.InsertBase;
+import nju.lzx.Interface.Constraint;
+import nju.lzx.Interface.Operator;
+import nju.lzx.Interface.Route;
+import nju.lzx.LocalSearchOperator.CrossBase;
+import nju.lzx.LocalSearchOperator.ExchangeBaseDeep;
+import nju.lzx.LocalSearchOperator.RelocateBase;
+import nju.lzx.LocalSearchOperator.RelocateBaseIntra;
+import nju.lzx.Route.RouteBase;
+import nju.lzx.Utility.Atr;
+import nju.lzx.Utility.Reference;
+
+
+public class Main {
+
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+		double t1 = System.nanoTime();
+		Instance inst = load_instance("data/E-n101-k14.vrp");
+		//设置模式参数。
+		inst.parameter.Mode.multi_thread_enable = false;
+		//设置初始解参数。
+		inst.parameter.InitialSolution.log_print = false;
+		//设置禁忌搜索参数。
+		inst.parameter.TabuSearch.maximum_iteration = 2000;
+		inst.parameter.TabuSearch.maximum_tabu_tenure = 50;
+		inst.parameter.TabuSearch.tenure_decay_rate = 0.99;
+		inst.parameter.TabuSearch.mininum_tabu_tenure = 10;
+		inst.parameter.TabuSearch.mininum_shake_tenure = 100;
+		inst.parameter.TabuSearch.minimum_shake_iteration = 100;
+		inst.parameter.TabuSearch.log_print = true;
+		inst.parameter.TabuSearch.log_detail = false;
+		//设置算子参数。
+		inst.parameter.Operator.insertion_prune_threshhold = 1e6;
+		inst.parameter.Operator.exchange_prune_threshhold = 1e6;
+		inst.parameter.Operator.cross_prune_threshhold = 1e6;
+		inst.parameter.Operator.remove_prune_threshhold = 0;
+		inst.parameter.Operator.route_cross_threshhold = 1e6;
+		
+		
+		//构造约束条件。
+		Constraint[] cnts = new Constraint[2];
+		MinimizeFuelCost.ConstraintData dat = new MinimizeFuelCost.ConstraintData(inst.d, inst.q, 1.51, 17.22);
+		cnts[0] = new MinimizeFuelCost(dat, 1);
+		CapacityConstraint.ConstraintData cap_dat = new CapacityConstraint.ConstraintData(inst.q, inst.Q);
+		cnts[1] = new CapacityConstraint(cap_dat, true, 100);
+		
+		//构造算法算子。
+		Operator[] operators = new Operator[4];
+		double[] coefs = new double[4];
+		operators[0] = new RelocateBase(inst);
+		coefs[0] = 1;
+		operators[1] = new ExchangeBaseDeep(inst);
+		coefs[1] = 0.5;
+		operators[2] = new CrossBase(inst);
+		coefs[2] = 1;
+		operators[3] = new RelocateBaseIntra(inst);
+		coefs[3] = 1;
+		
+		//构造需要访问的节点集合。
+		ArrayList<Atr> atrs = new ArrayList<Atr>();
+		for(int i = 1; i < inst.n; i++){
+			atrs.add(new Atr(i));
+		}
+		boolean[] exc = new boolean[inst.n];
+		for(int i = 1; i < inst.n; i++)
+			exc[i] = true;
+		
+		//构造初始解。
+		Greedy greedy = new Greedy(inst, new InsertBase(inst, cnts));
+		ArrayList<Route> s = greedy.generate(atrs);
+		System.out.println(greedy.toString(s));
+		greedy.check(s, true, exc);
+		System.out.println("feasibility of the initial solution>>>" + greedy.is_feasible(s) + "\t" + s.size() + "\t" + greedy.get_total_cost(s));
+		
+		//最小化行驶距离。
+		TabuSearch tabu = new TabuSearch(inst, operators, coefs, null);
+		s = toDeep(inst, s);
+		tabu.check(s, true, exc);
+		for(int i = 0; i < s.size(); i++){
+			//s.get(i).relax(1);
+		}
+		ArrayList<Route> bs = tabu.solve(s);
+
+		tabu.check(bs, true, exc);
+		//System.out.println(tabu.toString(bs));
+		double t2 = System.nanoTime();
+		System.out.println("computation time>>>" + (t2 - t1) / 1e9);
+		//inst.statistics.print();
+	}
+	
+
+	public static Instance load_instance(String path) throws FileNotFoundException{
+		Instance inst = new Instance();
+		Scanner cin = new Scanner(new BufferedReader(new FileReader(path)));
+		for(int i = 0; i < 3; i++)
+			cin.nextLine();
+		for(int i = 0; i < 2; i++)
+			cin.next();
+		inst.n = cin.nextInt();
+		inst.q = new double[inst.n];
+		inst.lng = new double[inst.n];
+		inst.lat = new double[inst.n];
+		inst.d = new double[inst.n][inst.n];
+		inst.t = new double[inst.n][inst.n];
+		for(int i = 0; i < 5; i++)
+			cin.next();
+		inst.Q = cin.nextDouble();
+		cin.next();
+		for(int i = 0; i < inst.n; i++){
+			cin.next();
+			inst.lng[i] = cin.nextDouble();
+			inst.lat[i] = cin.nextDouble();
+		}
+		cin.next();
+		for(int i = 0; i < inst.n; i++){
+			cin.next();
+			inst.q[i] = cin.nextDouble();
+		}
+		for(int i = 0; i < inst.n; i++){
+			for(int j = i + 1; j < inst.n; j++){
+				inst.d[i][j] = inst.d[j][i] = inst.t[i][j] = inst.t[j][i] = 
+						Math.sqrt((inst.lng[i] - inst.lng[j]) * (inst.lng[i] - inst.lng[j]) + (inst.lat[i] - inst.lat[j]) * (inst.lat[i] - inst.lat[j]));
+			}
+		}
+		cin.close();
+		return inst;
+	}
+
+	
+	public static ArrayList<Route> toDeep(Instance inst, ArrayList<Route> s){
+		ArrayList<Route> ns = new ArrayList<Route>();
+		for(int i = 0; i < s.size(); i++){
+			Route r = s.get(i);
+			Reference ref = r.get_reference();
+			Route nr = new RouteBase(inst, ref.len, ref.seq, false, true);
+			Constraint[] _cnts = r.get_constraints();
+			Constraint[] _cnts2 = new Constraint[_cnts.length];
+			for(int j = 0; j < _cnts.length; j++){
+				_cnts2[j] = _cnts[j].copy(nr.get_reference());
+			}
+			nr.add_constraints(_cnts2);
+			ns.add(nr);
+		}
+		return ns;
+	}
+}
+
+```
+
 
 ```java
     PrintStream ps = new PrintStream(new FileOutputStream("../result/log.txt"));
