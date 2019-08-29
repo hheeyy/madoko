@@ -239,7 +239,7 @@ GVRP包索引概览，包括各个程序包的说明以及使用方法。
 
 基础VRP问题，比如CVRP、VRPTW问题，可以直接使用GVRP包中的Instance类，Instance类中提供了基础VRP问题所需要的基本数据。如果是VRP变种问题，比如EVRP(Electric Vehicle Routing Problem)问题,则需要定义一些特殊变量，比如电动车的电池容量、最长行驶距离等，此时就需要在继承基础Instance类的基础之上，实现该特殊问题的InstanceVariant类。
 
-在确定该VRP问题需要的算例变量及数据之后，需要实现加载算例数据的函数。不同算例的格式可能是不一样的，所以应该根据算例的特性来对加载算例函数（load_Instance()）进行适当的修改。
+在确定该VRP问题需要的算例变量及数据之后，需要在eclipse che 中实现加载算例数据的函数。不同算例的格式可能是不一样的，所以应该根据算例的特性来对加载算例函数（load_Instance()）进行适当的修改。
 
 **第二步：确定目标函数以及约束条件**
 
@@ -258,7 +258,7 @@ GVRP包索引概览，包括各个程序包的说明以及使用方法。
 
 在构造初始解时，需要用到InitialSolutionOperator包中Insert算子，用于贪心算法构造初始解。该程序包中提供了基础VRP问题的插入算法（InsertBase）、Cluster问题的插入算法（InsertCluster）、EVRP（Electric Vehicle Routing Problem）的插入算法（InsertElectric）、PDP（Pickup and Delivery）问题的插入算法（InsertPD）以及SD（Split Delivery）问题的插入算法（InsertSD）。假如是其他VRP问题需要用到特殊的Insert算子，可以在eclipse che中重新写一个Insert类，在主类中调用该Insert类即可。
 
-使用TabuSearch优化解时，要选择邻域算子（LocalSearchOperator包）。在该程序包中主要提供三种类型的邻域算子，即Relocate、Exchange、Cross算子及它们的变种。
+使用TabuSearch优化解时，要选择邻域算子（LocalSearchOperator包）。在该程序包中主要提供三种类型的邻域算子，即Relocate、Exchange、Cross算子及它们的变种。这里要注意的一点是，在使用ExchangeBaseDeep和RelocateBaseIntra算子时，前提条件是解的路径中包含子路径（子路径即该路径除去其中任意一个客户的路径的集合）。在eclipse che中需要实现将初始解转化为包含子路径的解的函数。
 
 
 **第五步：选择优化算法**
@@ -267,7 +267,7 @@ GVRP包索引概览，包括各个程序包的说明以及使用方法。
 
 **第六步：调整默认参数进一步优化解**
 
-参数的控制对于最终解的优劣的
+参数的控制对于最终解的优劣的影响也是很大的。
 
 - CVRP实现代码
 
@@ -283,7 +283,6 @@ import java.io.PrintStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
 import nju.lzx.Constraint.*;
 import nju.lzx.Data.*;
 import nju.lzx.Algorithm.*;
@@ -308,7 +307,7 @@ public class CVRP {
 	public static class InstanceCVRP extends Instance{
 		
 		/*
-           这是最简单的VRP问题，是基础的Instance，不需要额外的变量；如果需要额外的变量则在这里进行声明
+           这是最简单的VRP问题，是基础的Instance，不需要额外的变量，可以不需要这个类；如果需要额外的变量则在这里进行声明，并在加载算例时调用
 		 */
 		
 	}
