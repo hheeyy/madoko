@@ -258,7 +258,7 @@ GVRP包索引概览，包括各个程序包的说明以及使用方法。
 
 在构造初始解时，需要用到InitialSolutionOperator包中Insert算子，用于贪心算法构造初始解。该程序包中提供了基础VRP问题的插入算法（InsertBase）、Cluster问题的插入算法（InsertCluster）、EVRP（Electric Vehicle Routing Problem）的插入算法（InsertElectric）、PDP（Pickup and Delivery）问题的插入算法（InsertPD）以及SD（Split Delivery）问题的插入算法（InsertSD）。假如是其他VRP问题需要用到特殊的Insert算子，可以在eclipse che中重新写一个Insert类，在主类中调用该Insert类即可。
 
-使用TabuSearch优化解时，要选择邻域算子（LocalSearchOperator包）。在该程序包中主要提供三种类型的邻域算子，即Relocate、Exchange、Cross算子及它们的变种。这里需要注意的是，在使用ExchangeBaseDeep和RelocateBaseIntra算子时，前提条件是解中的路径必须包含子路径（子路径是当前路径中剔除任意一个客户点的路径集合）。因此使用这两个算子时，在eclipse che中要实现将初始解转化为包含子路径的解的函数。除此之外还注意的一点是，算子并不是越多解的质量就会更高，因此要合理选择算子并且调整算子的参数来提高解的。
+使用TabuSearch优化解时，要选择邻域算子（LocalSearchOperator包）。在该程序包中主要提供三种类型的邻域算子，即Relocate、Exchange、Cross算子及它们的变种。这里需要注意的是，在使用ExchangeBaseDeep和RelocateBaseIntra算子时，前提条件是解中的路径必须包含子路径（子路径是当前路径中剔除任意一个客户点的路径集合）。因此使用这两个算子时，在eclipse che中要实现将初始解转化为包含子路径的解的函数。除此之外还注意的一点是，算子并不是越多解的质量就会更高，因此要合理选择算子并且调整算子的参数来提高解的质量。
 
 ```java
   s = toDeep(Inst,s);
@@ -268,7 +268,7 @@ GVRP包索引概览，包括各个程序包的说明以及使用方法。
 
 **第五步：选择优化算法**
 
-在GVRP包中提供了两种优化算法，分别是VehicleReductionAlgo和TabuSearch。前一种算法主要针对目标函数为最小化车辆数目的问题，后一种算法针对目标函数为其他类型的情况。TabuSearch的情况比较简单，VehicleReductionAlgo算法的参数相较而言比较复杂。使用VehicleReductionAlgo时，要选择邻域搜索算法，并且
+在GVRP包中提供了两种优化算法，分别是VehicleReductionAlgo和TabuSearch。前一种算法主要针对目标函数为最小化车辆数目的问题，后一种算法针对目标函数为其他类型的情况。TabuSearch的情况比较简单，VehicleReductionAlgo算法的参数相较而言比较复杂。使用VehicleReductionAlgo时，要选择邻域搜索算法（这里一般选择算法包中的TabuSearch），邻域搜索算子，LabelSetting（标签设置法），减少车辆数目算子等，即在TabuSearch的基础上还要再增加几个参数，比实现基础的目标函数更为复杂。
 
 **第六步：调整默认参数进一步优化解**
 
