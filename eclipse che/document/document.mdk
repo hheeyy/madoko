@@ -117,17 +117,27 @@ Workspace是程序存放和运行调试的空间，类似于本地的eclipse。
 
 ##Workspace窗口
 
-首先我们来看一下workspace的界面，界面由多个窗口组成，和eclipse的界面非常像，包括菜单栏、编辑器、包资源管理器、
+首先我们来看一下workspace的界面，界面由多个窗口组成，和eclipse的界面非常像，包括菜单栏、编辑器、包资源管理器、控制台等窗口。
+
+![window]
+
+[window]: images/window.png "window" { width:auto; max-width:90% }
 
 - 菜单栏
 
 包括文件、编辑、帮助、搜索、运行与窗口等菜单，大部分的向导和各种配置对话框都可以从主菜单中打开。
 
+- 包资源管理器
+
+用于显示Java项目中的源文件、引用的库等，开发Java程序主要是用这个视图。
+
 - 编辑器
 
-- 主界面
+用于代码的编辑。
 
 - 控制台
+
+主要用于程序的输出显示或者是显示代码或项目配置的错误信息等。
 
 ##Workspace菜单
 
@@ -186,7 +196,7 @@ Workspace是程序存放和运行调试的空间，类似于本地的eclipse。
 
 - Manage commands
 
-    如果要修改run和debug执行语句，则可以在此处进行修改。
+    如果要使用其他的run或者debug执行语句，则可以在此处进行添加或修改。
 
 
 ![run]
@@ -203,28 +213,30 @@ Workspace是程序存放和运行调试的空间，类似于本地的eclipse。
 
 ###Create a project
 
-Workspace --> Creat Project --> 输入新的Project的名字 --> 创建成功
+Workspace --> Creat Project --> 选择Java环境（注意这里一定要选择环境）  --> 输入新创建的Project名字（英文） --> 点击Creat --> 创建成功
 
+![newproject]
 
+[newproject]: images/newproject.png "newproject" { width:auto; max-width:90% }
 
 ###Import a project
 
-Workspace --> Import Project --> 在URL处粘贴github某一具体项目的链接
+Workspace --> Import Project --> 在URL处粘贴github项目包的链接
 
-!githubcopy
+*复制github项目地址*
 
 ![githubcopy]
 
 [githubcopy]: images/githubcopy.png "githubcopy" { width:auto; max-width:90% }
 
-!github
+*在eclipse che中引入github项目*
 
 ![github]
 
 [github]: images/github.png "github" { width:auto; max-width:90% }
 
 
-假如github的respository是private的，则需要在URL的链接中插入账号密码等的信息，格式如下：
+假如github的respository是private的，则需要在URL的链接中插入账号密码信息，格式如下：
 
 *http://username:password@github.com/username/respository.git*
 
