@@ -133,41 +133,58 @@ Workspace是程序存放和运行调试的空间，类似于本地的eclipse。
 
 - Workspace
 
-*Import Project*    从外部引入一个项目
+    *Import Project*    
 
-*Creat Project*     建立一个新项目
+    从外部引入一个项目
 
-*Download as ZIP*   将当前项目存为本地压缩包（ZIP格式）
+    *Creat Project*     
 
-*Stop*              停止运行当前工作空间
+    建立一个新项目
 
-*Status*            当前工作空间运行情况
+    *Download as ZIP*   
 
-*Creat Factory*     ？
+    将当前项目存为本地压缩包（ZIP格式）
+
+    *Stop*              
+
+    停止运行当前工作空间
+
+    *Status*            
+
+    当前工作空间运行情况
+
+    *Creat Factory*     
 
 - Project
 
-*New*   新建文件夹或者各种类型的文件。
+    *New*   
 
-*Upload File*   上传文件；选中文件夹后才会显示可点击。
+    新建文件夹或者各种类型的文件。
 
-*Upload Folder*   上传文件夹。这里要注意的一点是，上传的文件夹必须是以压缩包.ZIP的格式，如果是.RAR格式的压缩包则不能成功上传。
+    *Upload File*   
 
-*Configue Classpath*   Java build Path,向当前项目中添加JAR包或是添加文件夹Folder。
+    上传文件；选中文件夹后才会显示可点击。
+
+    *Upload Folder*
+    
+    
+    上传文件夹。这里要注意的一点是，上传的文件夹必须是以压缩包.ZIP的格式，如果是.RAR格式的压缩包则不能成功上传。
+
+    *Configue Classpath*   
+    
+    Java build Path，向当前项目中添加JAR包或是添加文件夹Folder。
 
 - run
 
-运行当前类。注意这里要选择有主类的class后运行，选择不含有主类的class运行会出错。
+    运行当前类。注意这里要选择有主类的class后运行，选择不含有主类的class运行会出错。
 
 - debug
 
-对程序进行调试。
+    对程序进行调试。
 
 - Manage commands
 
-  Linux
-  
-  如果要修改run和debug执行语句，则可以在此处进行修改。
+    如果要修改run和debug执行语句，则可以在此处进行修改。
 
 ##如何开始写一个程序
 
@@ -222,6 +239,10 @@ GVRP包索引概览，包括各个程序包的说明以及使用方法。
 在确定该VRP问题需要的算例变量及数据之后，需要实现加载算例数据的函数。不同算例的格式可能是不一样的，所以应该根据算例的特性来对加载算例函数（load_Instance()）进行适当的修改。
 
 **第二步：确定目标函数以及约束条件**
+
+解决VRP问题首先要明确目标函数是什么，是最小化行驶距离，最小化总成本，最大化收益，或者是使策略中使用的车辆数目最少等等。目标函数不同，那么相同的解的质量也不同，算法优化的方向也会不同。
+
+其次，要确定该问题的约束条件有哪些，以及该约束条件是否可以松弛（relax）。约束条件松弛的意思是，在构造解及优化解的过程中可以违反该约束条件，但是
 
 
 
@@ -799,7 +820,7 @@ public class VRPTW {
   
 ```
 
-- 增加一个约束条件（FCM-VRP）
+- FCM-VRP
 
 该问题是考虑燃料消耗的车辆路径问题，和最基本的VRP问题之间最大的区别是
 
