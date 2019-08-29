@@ -347,7 +347,7 @@ e.g.
 
 - **CVRP实现代码**
 
-CVRP问题是
+CVRP（Capacitied Vehicle Routing Problem）问题是最基础的VRP问题，它的约束条件只有一个容量约束，目标函数是最小化行驶距离。所以约束条件Constraints数组大小只要为2即可。以下是具体实现代码：
 
 ```java
   
@@ -574,6 +574,8 @@ public class CVRP {
 
 ```
 - **VRPTW实现代码(solomon)**
+
+VRPTW（Vehicle Routing Problem with Time Windows）问题和CVRP问题的区别在于VRPTW问题多了一个约束条件，因此需要在CVRP问题的基础上再添加一个时间窗约束，并且VRPTW与CVRP问题使用的算例不同，因此加载算例数据的函数（load_Instance()）也需要重写，具体代码实现如下：
 
 ```java
 import java.io.BufferedReader;
@@ -823,6 +825,15 @@ public class VRPTW {
 }
   
 ```
+
+- **实现目标函数的改变**
+
+这里仍以VRPTW问题为例，上一个VRPTW问题是以最小化行驶距离为目标函数，如果要以最小化车辆数目为目标函数，则需要使用VehicleReductionAlgo算法。由于是同一个VRPTW问题，算例也相同，所以其余代码和上一个VRPTW的代码实现相同，这里主要给出main函数中初始解之后优化算法VehicleReductionAlgo实现的代码。
+
+```java
+  
+```
+
 
 - **添加一个约束的情况（FCM-VRP）**
 
