@@ -1224,3 +1224,6 @@ public class Main {
 
  小组成员共同查看同一工作空间并同时编辑同一项目时，在编辑代码时很容易产生跳行等情况，因此在修改项目时，最好先将该项目加入File Watcher exclusion list，这样在编辑时其他拥有权限的成员无法实时看到你的修改，在修改完成后，将该项目移出list，其他成员即可看到当次修改。具体操作为，选中需要加入list的项目，右键点击鼠标，点击Add to File Watcher exclusion list，在修改完成后，仍选中该项目，右键选择Remove from File Watcher exclusion list即可。
 
+![tip2]
+
+[tip2]: images/tip2.png "tip2" { width:auto; max-width:90% }
