@@ -251,13 +251,19 @@ GVRP包索引概览，包括各个程序包的说明以及使用方法。
 
 - frame
 
-使用GVRP包求解VRP及其变种问题的框架如下图：
+GVRP包求解VRP及其变种问题的框架如下图：
 
 ![frame1]
 
 [frame1]: images/frame1.jpeg "frame1" { width:auto; max-width:100% }
 
-在使用GVRP包解决VRP问题时，最重要的是明确目标函数以及约束条件，其次是算法的选择、算子的选择以及参数的调整。
+在使用GVRP包解决VRP问题时，最重要的是明确目标函数以及约束条件，其次是算法的选择、算子的选择以及参数的调整。此外，在代码中用到某一个程序包时，必须在开头先import该程序包。例如，使用Constraint包的代码：
+
+```java
+  import nju.lzx.Constraint.*;
+```
+
+以下是使用GVRP包解决VRP及其变种问题的步骤。
 
 **第一步：判断是否为基础VRP问题，算例中有无其他特殊变量，并实现加载算例函数**
 
@@ -282,7 +288,7 @@ GVRP包索引概览，包括各个程序包的说明以及使用方法。
 
 在构造初始解时，需要用到InitialSolutionOperator包中Insert算子，用于贪心算法构造初始解。该程序包中提供了基础VRP问题的插入算法（InsertBase）、Cluster问题的插入算法（InsertCluster）、EVRP（Electric Vehicle Routing Problem）的插入算法（InsertElectric）、PDP（Pickup and Delivery）问题的插入算法（InsertPD）以及SD（Split Delivery）问题的插入算法（InsertSD）。假如是其他VRP问题需要用到特殊的Insert算子，可以在eclipse che中重新写一个Insert类，在主类中调用该Insert类即可。
 
-使用TabuSearch优化解时，要选择邻域算子（LocalSearchOperator包）。在该程序包中主要提供三种类型的邻域算子，即Relocate、Exchange、Cross算子及它们的变种。这里需要注意的是，在使用ExchangeBaseDeep和RelocateBaseIntra算子时，前提条件是解中的路径必须包含子路径（子路径是当前路径中剔除任意一个客户点的路径集合）。因此使用这两个算子时，在eclipse che中要实现将初始解转化为包含子路径的解的函数。除此之外还注意的一点是，算子并不是越多解的质量就会更高，因此要合理选择算子并且调整算子的参数来提高解的质量。
+使用TabuSearch优化解时，要选择邻域算子（LocalSearchOperator包）。在该程序包中主要提供三种类型的邻域算子，即Relocate、Exchange、Cross算子及它们的变种。这里需要注意的是，在使用ExchangeBaseDeep和RelocateBaseIntra算子时，前提条件是解中的路径必须包含子路径（子路径是当前路径中剔除任意一个客户点的路径集合）。因此使用这两个算子时，在eclipse che中要实现将初始解转化为包含子路径的解的函数（to Deep()）。除此之外还注意的一点是，算子并不是越多解的质量就会更高，因此要合理选择算子并且调整算子的参数来提高解的质量。
 
 ```java
   s = toDeep(Inst,s);//将初始解转化为含有子路径的解，需要在eclipse che中实现toDeep函数
@@ -343,7 +349,7 @@ e.g.
 
 ### Eclipse Che具体应用
 
-这一节给出了三种不同VRP问题的GVRP包
+这一节给出了使用GVRP包解决不同VRP问题的实现代码。首先是最简单的CVRP问题，接着是以最小化行驶距离为目标函数的VRPTW问题，然后是在基础VRPTW问题的基础上改变目标函数，将目标函数改为最小化车辆数目，最后是添加一个新的约束条件（目标函数）的FCM-VRP问题的实现代码。
 
 - **CVRP实现代码**
 
