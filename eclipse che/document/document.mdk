@@ -263,7 +263,7 @@ GVRP包索引概览，包括各个程序包的说明以及使用方法。
 
 基础VRP问题，比如CVRP、VRPTW问题，可以直接使用GVRP包中的Instance类，Instance类中提供了基础VRP问题所需要的基本数据。如果是VRP变种问题，比如EVRP(Electric Vehicle Routing Problem)问题,则需要定义一些特殊变量，比如电动车的电池容量、最长行驶距离等，此时就需要在继承基础Instance类的基础之上，实现该特殊问题的InstanceVariant类。
 
-在确定该VRP问题需要的算例变量及数据之后，需要在eclipse che中实现加载算例数据的函数。不同算例的格式可能是不一样的，所以应该根据算例的特性来对加载算例函数（load_Instance()）进行适当的修改。
+在确定该VRP问题需要的算例变量及数据之后，需要在eclipse che中实现加载算例数据的函数。不同算例的格式可能是不一样的，所以应该根据算例的特性来对加载算例函数（load_instance()）进行适当的修改。
 
 **第二步：确定目标函数以及约束条件**
 
@@ -401,7 +401,8 @@ public class CVRP {
         //System.setOut(ps);
 		Instance inst = load_instance("../data/cvrp/vrpnc1.txt");//加载算例
     /*
-    若是有特殊变量的算例，则在这里
+    若是有特殊变量的算例，则在这里调用特殊Instance类，在此例中为InstanceCVRP类
+    InstanceCVRP inst = (InstanceCVRP) load_instance(...);
     */
 		double t2 = System.nanoTime();
 		double load_instance_time = (t2 - t1) / 1e9;
@@ -473,7 +474,7 @@ public class CVRP {
 		ArrayList<Route> bs = tabu.solve(s);
 		tabu.check(bs, true, exc);
 		System.out.println("feasibility of the solution>>>" + tabu.is_feasible(bs) + "\t" + bs.size() + "\t" + tabu.get_total_cost(bs));
-		//System.out.println(tabu.toString(bs));
+		System.out.println(tabu.toString(bs));
 		double t4 = System.nanoTime();
 		System.out.println("computation time>>>" + (t4 - t1) / 1e9);
 		inst.statistics.print();
@@ -575,7 +576,7 @@ public class CVRP {
 ```
 - **VRPTW实现代码(solomon)**
 
-VRPTW（Vehicle Routing Problem with Time Windows）问题和CVRP问题的区别在于VRPTW问题多了一个约束条件，因此需要在CVRP问题的基础上再添加一个时间窗约束，并且VRPTW与CVRP问题使用的算例不同，因此加载算例数据的函数（load_Instance()）也需要重写，具体代码实现如下：
+VRPTW（Vehicle Routing Problem with Time Windows）问题和CVRP问题的区别在于VRPTW问题多了一个约束条件，因此需要在CVRP问题的基础上再添加一个时间窗约束，并且VRPTW与CVRP问题使用的算例不同，因此加载算例数据的函数（load_Instance()）也需要重写。此外在CVRP中使用TabuSearch时并未使用到LabelSetting（标签设置法），在VRPTW问题中我们将实现LabelSetting的应用，具体代码实现如下：
 
 ```java
 import java.io.BufferedReader;
@@ -608,7 +609,7 @@ public class VRPTW {
 	 * VRPTW算例。
 	 */
 	public static class InstanceVRPTW extends Instance{
-  		
+  		//基础算例，不需要额外变量
 	}
 	
 	/**
@@ -684,20 +685,22 @@ public class VRPTW {
 		ArrayList<Route> s = greedy.generate(atrs);
 		s = toDeep(inst, s);
 		
-		//ArrayList<Route> s = load_solution(inst, cnts, "result/result.txt");
 		System.out.println(greedy.toString(s));
 		greedy.check(s, true, exc);
 		System.out.println("feasibility of the initial solution>>>" + greedy.is_feasible(s) + "\t" + s.size() + "\t" + greedy.get_total_cost(s));
 		double t3 = System.nanoTime();
 		double initial_construct_time = (t3 - t2) / 1e9;
 		System.out.println("load instance time>>>" + load_instance_time + "\t initial construct time>>>" + initial_construct_time);
-		//System.exit(0);
-		 
 		
 		//优化解的成本
-		TabuSearch tabu = new TabuSearch(inst, operators, coefs, null);
+    double[] plty = new double[inst.n]; 
+		for(int i = 0; i < inst.n; i++){
+		    plty[i] = 1;
+		}
+		EjectBase label = new EjectBase(inst, plty, exc);//labelsetting的调用
+		TabuSearch tabu = new TabuSearch(inst, operators, coefs, label);
 		ArrayList<Route> bs = tabu.solve(s);
-
+    
 		tabu.check(bs, true, exc);
 		System.out.println("feasibility of the solution>>>" + tabu.is_feasible(bs) + "\t" + bs.size() + "\t" + greedy.get_total_cost(bs));
 		//System.out.println(tabu.toString(bs));
@@ -831,7 +834,26 @@ public class VRPTW {
 这里仍以VRPTW问题为例，上一个VRPTW问题是以最小化行驶距离为目标函数，如果要以最小化车辆数目为目标函数，则需要使用VehicleReductionAlgo算法。由于是同一个VRPTW问题，算例也相同，所以其余代码和上一个VRPTW的代码实现相同，这里主要给出main函数中初始解之后优化算法VehicleReductionAlgo实现的代码。
 
 ```java
+    import nju.lzx.LabelSetting.*;
+    import nju.lzx.VehicleReductionOperator.*;//这里要注意应用到哪一个包就要在最开始进行import，否则就无法使用里面的类
   
+ //优化解的成本，目标是最小化车辆数目
+	double[] plty = new double[inst.n]; 
+	for(int i = 0; i < inst.n; i++){
+		  plty[i] = 1;
+	}
+	EjectBase label = new EjectBase(inst, plty, exc);
+	TabuSearch tabu = new TabuSearch(inst, operators, coefs, label);
+	VehicleMinimizeBase vopr = new VehicleMinimizeBase(inst, exc);
+    VehicleReductionAlgo vrn = new VehicleReductionAlgo(inst, tabu, vopr, 10, exc);
+	ArrayList<Route> bs = vrn.solve(s);
+
+	vrn.check(bs, true, exc);
+	System.out.println("feasibility of the solution>>>" + tabu.is_feasible(bs) + "\t" + bs.size() + "\t" + greedy.get_total_cost(bs));
+	double t4 = System.nanoTime();
+	System.out.println("computation time>>>" + (t4 - t1) / 1e9);
+	inst.statistics.print();
+	write_solution("../result/solomon/" + name +".txt", bs);
 ```
 
 
@@ -1187,8 +1209,18 @@ public class Main {
 ```
 
 
+### ***tips***
+
+- 文件重定向
+
+    文件重定向，即将原本在控制台输出的信息另存为txt文件，便于查看结果
+
 ```java
     PrintStream ps = new PrintStream(new FileOutputStream("../result/log.txt"));
-    //文件重定向，将在控制台输出的信息另存为txt文件，便于查看结果
     System.setOut(ps);
 ```
+
+- File Watcher exclusion list
+
+ 小组成员共同查看同一工作空间并同时编辑同一项目时，在编辑代码时很容易产生跳行等情况，因此在修改项目时，最好先将该项目加入File Watcher exclusion list，这样在编辑时其他拥有权限的成员无法实时看到你的修改，在修改完成后，将该项目移出list，其他成员即可看到当次修改。具体操作为，选中需要加入list的项目，右键点击鼠标，点击Add to File Watcher exclusion list，在修改完成后，仍选中该项目，右键选择Remove from File Watcher exclusion list即可。
+
