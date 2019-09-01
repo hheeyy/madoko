@@ -13,8 +13,6 @@ Eclipse Che是一款基于浏览器的在线集成开发环境（IDE），提供
 # 注册登录
 首先开启浏览器访问网址：<http://120.55.69.180:8080> ，注册后显示如下登录界面，输入账号密码进行登录。
 
-!login
-
 ![login]
 
 [login]: images/login.png "login" { width:auto; max-width:90% }
@@ -23,19 +21,17 @@ Eclipse Che是一款基于浏览器的在线集成开发环境（IDE），提供
 
 登录后显示eclipse che界面。
 
-!eclipse che
-
 ![eclipse che]
 
 [eclipse che]: images/eclipse-che.png "eclipse che" { width:auto; max-width:90% }
 
-- *Organizations*
+- **Organizations**
 
 由管理者创建一个小组，由管理者和若干组员组成。管理员可以设置该小组工作空间数量、可同时运行的工作空间数量以及该小组内工作空间可使用的最大内存等。
 
 组员可以与管理者共享工作空间，管理者可以设置组员对工作空间的使用权限，也有权限查看组员的工作空间，进行共享代码，并且可以进行代码的编辑、修改和调试等。
 
-- *创建一个Workspace（以Java为例）*
+- **创建一个Workspace（以Java为例）**
 
 Workspace是程序储存和运行调试的地方，类似于本地的eclipse。创建一个属于自己的workspace的步骤如下：
 
@@ -123,19 +119,19 @@ Workspace是程序存放和运行调试的空间，类似于本地的eclipse。
 
 [window]: images/window.png "window" { width:auto; max-width:90% }
 
-- 菜单栏
+- **菜单栏**
 
 包括文件、编辑、帮助、搜索、运行与窗口等菜单，大部分的向导和各种配置对话框都可以从主菜单中打开。
 
-- 包资源管理器
+- **包资源管理器**
 
 用于显示Java项目中的源文件、引用的库等，开发Java程序主要是用这个视图。
 
-- 编辑器
+- **编辑器**
 
 用于代码的编辑。
 
-- 控制台
+- **控制台**
 
 主要用于程序的输出显示或者是显示代码或项目配置的错误信息等。
 
@@ -143,7 +139,7 @@ Workspace是程序存放和运行调试的空间，类似于本地的eclipse。
 
 这里简单介绍一下workspace菜单的常用功能。
 
-- Workspace
+- **Workspace**
 
     *Import Project*    
 
@@ -167,7 +163,7 @@ Workspace是程序存放和运行调试的空间，类似于本地的eclipse。
 
     *Creat Factory*     
 
-- Project
+- **Project**
 
     *New*   
 
@@ -186,15 +182,15 @@ Workspace是程序存放和运行调试的空间，类似于本地的eclipse。
     
     Java build Path，向当前项目中添加JAR包或是添加文件夹Folder。
 
-- run
+- **run**
 
     运行当前类。注意这里要选择有主类的class后运行，选择不含有主类的class运行会出错。
 
-- debug
+- **debug**
 
     对程序进行调试。
 
-- Manage commands
+- **Manage commands**
 
     如果要使用其他的run或者debug执行语句，则可以在此处进行添加或修改。
 
@@ -243,13 +239,14 @@ Workspace --> Import Project --> 在URL处粘贴github项目包的链接
 
 ###Add External Libraries（以GVRP为例）
 
-- index
+- **index**
 
 GVRP包索引概览，包括各个程序包的说明以及使用方法。
 
 <http://120.55.69.180:8080/docs/index.html>
 
-- frame
+
+- **frame**
 
 GVRP包求解VRP及其变种问题的框架如下图：
 
