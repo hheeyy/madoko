@@ -344,7 +344,10 @@ e.g.
 
 使用GVRP包解决VRP及其变种问题的流程如下图：
 
-***！流程图***
+![process]
+
+[process]: images/process.png "process" { width:auto; max-width:90% }
+
 
 
 ### Eclipse Che具体应用
