@@ -263,7 +263,7 @@ Workspace --> Import Project --> 在URL处粘贴github项目包的链接
 
 <div align=center>![frame1]
 
-[frame1]: images/frame1.jpeg "frame1" { width:auto; max-width:100% }
+[frame1]: images/frame1.jpeg "frame1" { width:auto; max-width:150% }
 
 <div align=left>
 
@@ -356,7 +356,7 @@ e.g.
 
 <div align=center>![process]
 
-[process]: images/process.png "process" { width:auto; max-width:90% }
+[process]: images/process.png "process" { width:auto; max-width:200% }
 
 <div align=left>
 
@@ -880,7 +880,7 @@ public class VRPTW {
 
 　　该问题是考虑燃料消耗的车辆路径问题，目标是最小化成本，成本中包括燃料消耗的成本。该问题和最基本的VRP问题之间最大的区别是在GVRP包中没有燃料消耗的约束条件类，因此需要在eclipse che中再写一个约束类（MinimizeFuelCost）。
 
-***MinimizeFuelCost.class***
+***MinimizeFuelCost.java***
 
 ```java
    
@@ -1061,7 +1061,7 @@ public class MinimizeFuelCost extends AbstractConstraint implements Base {
 
 　　然后需要在解决FCM-VRP问题的主类中调用MinimizeFuelCost类作为目标函数，代码如下：
 
-***Main.class***
+***Main.java***
 
 ```java
 import java.io.BufferedReader;
@@ -1228,7 +1228,7 @@ public class Main {
 ```
 
 
-### ***Ｔips***
+### ***Tips***
 
 - **文件重定向**
 
