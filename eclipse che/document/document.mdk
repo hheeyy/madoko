@@ -160,8 +160,7 @@ Workspace是程序存放和运行调试的空间，类似于本地的eclipse。
     *Status*            
 
     当前工作空间运行情况
-
-    *Creat Factory*     
+   
 
 - **Project**
 
@@ -293,9 +292,11 @@ GVRP包求解VRP及其变种问题的框架如下图：
 
 最后一种是针对最小化车辆数目算法（VehicleReductionAlgo）所需要的算子（VehicleReductionOperator包）。其中包括对基础VRP问题的算子类及另外三种VRP变种问题的算子类。
 
+
 **第五步：选择优化算法**
 
 在GVRP包中提供了两种优化算法，分别是VehicleReductionAlgo和TabuSearch。前一种算法主要针对目标函数为最小化车辆数目的问题，后一种算法针对目标函数为其他类型的情况。TabuSearch的情况比较简单，VehicleReductionAlgo算法的参数相较而言比较复杂。使用VehicleReductionAlgo时，要选择邻域搜索算法（这里一般选择算法包中的TabuSearch），邻域搜索算子，LabelSetting（标签设置法），减少车辆数目算子等，即在TabuSearch的基础上还要再增加几个参数，比实现基础的目标函数更为复杂。
+
 
 **第六步：调整默认参数进一步优化解**
 
