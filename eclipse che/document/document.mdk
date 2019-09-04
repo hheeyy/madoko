@@ -34,13 +34,13 @@ Package       : [UTF8]ctex
 
 　　由管理者创建一个小组，由管理者和若干组员组成。管理员可以设置该小组工作空间数量、可同时运行的工作空间数量以及该小组内工作空间可使用的最大内存等。
 
-组员可以与管理者共享工作空间，管理者可以设置组员对工作空间的使用权限，也有权限查看组员的工作空间，进行共享代码，并且可以进行代码的编辑、修改和调试等。
+　　组员可以与管理者共享工作空间，管理者可以设置组员对工作空间的使用权限，也有权限查看组员的工作空间，进行共享代码，并且可以进行代码的编辑、修改和调试等。
 
 - **创建一个Workspace（以Java为例）**
 
 　　Workspace是程序储存和运行调试的地方，类似于本地的eclipse。创建一个属于自己的workspace的步骤如下：
 
-首先点击左侧菜单的Workspace，进入如下页面，可以看到此时已有两个工作空间存在及其一些属性。
+　　首先点击左侧菜单的Workspace，进入如下页面，可以看到此时已有两个工作空间存在及其一些属性。
 
 
 <div align=center>![workspace1]
@@ -48,10 +48,10 @@ Package       : [UTF8]ctex
 [workspace1]: images/workspace1.png "workspace1" { width:auto; max-width:90% }
 
 <div align=left>
-  
+
 　　接着点击 Add Workspace，出现如下页面。可以看到，workspace的名字用中文会报错，所以workspace的命名需要使用英文进行命名。在ORGANIZATION下拉框处可以选择workspace建立在哪一个小组下面，可选择与小组中的成员进行共享；该教程以Java语言为主，所以SELECT STACK处选择Java环境；RAM处可以调整该workspace的内存大小，默认是2GB；PROJECTS处可以预先在新建的workspace中添加或引入项目，也可以在建立workspace之后再进行这一操作，具体操作在4.3节中详述。
 
-最后点击右上角或者是最下方的CREAT键，一个workspace就成功创建了。
+　　最后点击右上角或者是最下方的CREAT键，一个workspace就成功创建了。
 
 
 <div align=center>![creat1]
@@ -74,7 +74,7 @@ Package       : [UTF8]ctex
 
 　　这里要注意的一点是，如果希望自己所创建的workspace与其他人进行共享，那么还需要进行如下操作。
 
-在菜单栏选择Workspace，可以看到在该账号上之前已经有两个workspace存在，选择新建立的workspace（test）；或者直接在上一步workspace创建成功的界面上点击Edit键，进入编辑模式。
+　　在菜单栏选择Workspace，可以看到在该账号上之前已经有两个workspace存在，选择新建立的workspace（test）；或者直接在上一步workspace创建成功的界面上点击Edit键，进入编辑模式。
 
 
 
@@ -143,7 +143,7 @@ Package       : [UTF8]ctex
 
 ##Workspace菜单
 
-这里简单介绍一下workspace菜单的常用功能。
+　　这里简单介绍一下workspace菜单的常用功能。
 
 - **Workspace**
 
@@ -277,27 +277,27 @@ Workspace --> Import Project --> 在URL处粘贴github项目包的链接
 
 **第一步：判断是否为基础VRP问题，算例中有无其他特殊变量，并实现加载算例函数**
 
-基础VRP问题，比如CVRP、VRPTW问题，可以直接使用GVRP包中的Instance类，Instance类中提供了基础VRP问题所需要的基本数据。如果是VRP变种问题，比如EVRP(Electric Vehicle Routing Problem)问题,则需要定义一些特殊变量，比如电动车的电池容量、最长行驶距离等，此时就需要在继承基础Instance类的基础之上，实现该特殊问题的InstanceVariant类。
+　　基础VRP问题，比如CVRP、VRPTW问题，可以直接使用GVRP包中的Instance类，Instance类中提供了基础VRP问题所需要的基本数据。如果是VRP变种问题，比如EVRP(Electric Vehicle Routing Problem)问题,则需要定义一些特殊变量，比如电动车的电池容量、最长行驶距离等，此时就需要在继承基础Instance类的基础之上，实现该特殊问题的InstanceVariant类。
 
-在确定该VRP问题需要的算例变量及数据之后，需要在eclipse che中实现加载算例数据的函数。不同算例的格式可能是不一样的，所以应该根据算例的特性来对加载算例函数（load_instance()）进行适当的修改。
+　　在确定该VRP问题需要的算例变量及数据之后，需要在eclipse che中实现加载算例数据的函数。不同算例的格式可能是不一样的，所以应该根据算例的特性来对加载算例函数（load_instance()）进行适当的修改。
 
 **第二步：确定目标函数以及约束条件**
 
-解决VRP问题首先要明确目标函数是什么，是最小化行驶距离，最小化总成本，最大化收益，或者是使策略中使用的车辆数目最少等等。目标函数不同，那么相同的解的质量也不同，算法优化的方向也会不同。
+　　解决VRP问题首先要明确目标函数是什么，是最小化行驶距离，最小化总成本，最大化收益，或者是使策略中使用的车辆数目最少等等。目标函数不同，那么相同的解的质量也不同，算法优化的方向也会不同。
 
-其次，要确定该问题的约束条件有哪些，以及该约束条件是否可以松弛（relax）。约束条件松弛的意思是，在构造解及优化解的过程中可以违反该约束条件，但是得相应付出与违反值成比的惩罚成本，违反的值越大，惩罚成本越高，惩罚成本与目标函数值用于评判一个解的优劣。一般而言，松弛的约束条件越多，能够得到的解越优，但是松弛条件多，邻域搜索空间变大，同等迭代次数情况下，相应的计算时间也会更大。另外，松弛条件越多，得不到可行最优解的概率也会越高。因此，约束条件是否进行松弛要视情况而定。
+　　其次，要确定该问题的约束条件有哪些，以及该约束条件是否可以松弛（relax）。约束条件松弛的意思是，在构造解及优化解的过程中可以违反该约束条件，但是得相应付出与违反值成比的惩罚成本，违反的值越大，惩罚成本越高，惩罚成本与目标函数值用于评判一个解的优劣。一般而言，松弛的约束条件越多，能够得到的解越优，但是松弛条件多，邻域搜索空间变大，同等迭代次数情况下，相应的计算时间也会更大。另外，松弛条件越多，得不到可行最优解的概率也会越高。因此，约束条件是否进行松弛要视情况而定。
 
 **第三步：构造初始解**
 
-在GVRP包中构造初始解使用的是贪心（Greedy）算法，Greedy类适用的是只有一种车型的VRP问题，GreedyGeneral类适用于多车型多仓库的问题。在约束条件松弛的情况下，初始解不一定是可行解。在构造初始解时首先要先确定该VRP问题属于什么类型，事先选择合适的插入算子（在第四步中介绍），再选择贪心算法类型构造初始解。
+　　在GVRP包中构造初始解使用的是贪心（Greedy）算法，Greedy类适用的是只有一种车型的VRP问题，GreedyGeneral类适用于多车型多仓库的问题。在约束条件松弛的情况下，初始解不一定是可行解。在构造初始解时首先要先确定该VRP问题属于什么类型，事先选择合适的插入算子（在第四步中介绍），再选择贪心算法类型构造初始解。
 
 **第四步：选择算子**
 
-算子用于对当前解进行操作从而获得另一个解。GVRP包中提供了三种算法的算子集。
+　　算子用于对当前解进行操作从而获得另一个解。GVRP包中提供了三种算法的算子集。
 
-在构造初始解时，需要用到InitialSolutionOperator包中Insert算子，用于贪心算法构造初始解。该程序包中提供了基础VRP问题的插入算法（InsertBase）、Cluster问题的插入算法（InsertCluster）、EVRP（Electric Vehicle Routing Problem）的插入算法（InsertElectric）、PDP（Pickup and Delivery）问题的插入算法（InsertPD）以及SD（Split Delivery）问题的插入算法（InsertSD）。假如是其他VRP问题需要用到特殊的Insert算子，可以在eclipse che中重新写一个Insert类，在主类中调用该Insert类即可。
+　　在构造初始解时，需要用到InitialSolutionOperator包中Insert算子，用于贪心算法构造初始解。该程序包中提供了基础VRP问题的插入算法（InsertBase）、Cluster问题的插入算法（InsertCluster）、EVRP（Electric Vehicle Routing Problem）的插入算法（InsertElectric）、PDP（Pickup and Delivery）问题的插入算法（InsertPD）以及SD（Split Delivery）问题的插入算法（InsertSD）。假如是其他VRP问题需要用到特殊的Insert算子，可以在eclipse che中重新写一个Insert类，在主类中调用该Insert类即可。
 
-使用TabuSearch优化解时，要选择邻域算子（LocalSearchOperator包）。在该程序包中主要提供三种类型的邻域算子，即Relocate、Exchange、Cross算子及它们的变种。这里需要注意的是，在使用ExchangeBaseDeep和RelocateBaseIntra算子时，前提条件是解中的路径必须包含子路径（子路径是当前路径中剔除任意一个客户点的路径集合）。因此使用这两个算子时，在eclipse che中要实现将初始解转化为包含子路径的解的函数（to Deep()）。除此之外还注意的一点是，算子并不是越多解的质量就会更高，因此要合理选择算子并且调整算子的参数来提高解的质量。
+　　使用TabuSearch优化解时，要选择邻域算子（LocalSearchOperator包）。在该程序包中主要提供三种类型的邻域算子，即Relocate、Exchange、Cross算子及它们的变种。这里需要注意的是，在使用ExchangeBaseDeep和RelocateBaseIntra算子时，前提条件是解中的路径必须包含子路径（子路径是当前路径中剔除任意一个客户点的路径集合）。因此使用这两个算子时，在eclipse che中要实现将初始解转化为包含子路径的解的函数（to Deep()）。除此之外还注意的一点是，算子并不是越多解的质量就会更高，因此要合理选择算子并且调整算子的参数来提高解的质量。
 
 ```java
   s = toDeep(Inst,s);//将初始解转化为含有子路径的解，需要在eclipse che中实现toDeep函数
@@ -307,14 +307,14 @@ Workspace --> Import Project --> 在URL处粘贴github项目包的链接
 
 **第五步：选择优化算法**
 
-在GVRP包中提供了两种优化算法，分别是VehicleReductionAlgo和TabuSearch。前一种算法主要针对目标函数为最小化车辆数目的问题，后一种算法针对目标函数为其他类型的情况。TabuSearch的情况比较简单，VehicleReductionAlgo算法的参数相较而言比较复杂。使用VehicleReductionAlgo时，要选择邻域搜索算法（这里一般选择算法包中的TabuSearch），邻域搜索算子，LabelSetting（标签设置法），减少车辆数目算子等，即在TabuSearch的基础上还要再增加几个参数，比实现基础的目标函数更为复杂。
+　　在GVRP包中提供了两种优化算法，分别是VehicleReductionAlgo和TabuSearch。前一种算法主要针对目标函数为最小化车辆数目的问题，后一种算法针对目标函数为其他类型的情况。TabuSearch的情况比较简单，VehicleReductionAlgo算法的参数相较而言比较复杂。使用VehicleReductionAlgo时，要选择邻域搜索算法（这里一般选择算法包中的TabuSearch），邻域搜索算子，LabelSetting（标签设置法），减少车辆数目算子等，即在TabuSearch的基础上还要再增加几个参数，比实现基础的目标函数更为复杂。
 
 
 **第六步：调整默认参数进一步优化解**
 
-参数的控制对于最终解的优劣的影响很大。GVRP包中主要控制以下几个类型的参数：
+　　参数的控制对于最终解的优劣的影响很大。GVRP包中主要控制以下几个类型的参数：
 
-模式控制参数（ParaMode）：主要针对VRP问题的类型，如是否可以中途回到Depot，是否是PDP问题，是否是SD问题等。
+　　模式控制参数（ParaMode）：主要针对VRP问题的类型，如是否可以中途回到Depot，是否是PDP问题，是否是SD问题等。
 
 e.g.
 
@@ -352,7 +352,7 @@ e.g.
 
 　　除了这几类参数之外，还有一些特殊问题的参数，如路径长度参数、减少车辆数目算法的参数及TimeDependent参数等。
 
-使用GVRP包解决VRP及其变种问题的流程如下图：
+　　使用GVRP包解决VRP及其变种问题的流程如下图：
 
 <div align=center>![process]
 
@@ -1232,7 +1232,7 @@ public class Main {
 
 - **文件重定向**
 
-    文件重定向，即将原本在控制台输出的信息另存为txt文件，便于查看结果
+    文件重定向，即将原本在控制台输出的信息另存为txt文件，便于查看结果。
 
 ```java
     PrintStream ps = new PrintStream(new FileOutputStream("../result/log.txt"));
@@ -1241,7 +1241,7 @@ public class Main {
 
 - **File Watcher exclusion list**
 
- 　　小组成员共同查看同一工作空间并同时编辑同一项目时，在编辑代码时很容易产生跳行等情况，因此在修改项目时，最好先将该项目加入File Watcher exclusion list，这样在编辑时其他拥有权限的成员无法实时看到你的修改，在修改完成后，将该项目移出list，其他成员即可看到当次修改。具体操作为，选中需要加入list的项目，右键点击鼠标，点击Add to File Watcher exclusion list，在修改完成后，仍选中该项目，右键选择Remove from File Watcher exclusion list即可。
+　　小组成员共同查看同一工作空间并同时编辑同一项目时，在编辑代码时很容易产生跳行等情况，因此在修改项目时，最好先将该项目加入File Watcher exclusion list，这样在编辑时其他拥有权限的成员无法实时看到你的修改，在修改完成后，将该项目移出list，其他成员即可看到当次修改。具体操作为，选中需要加入list的项目，右键点击鼠标，点击Add to File Watcher exclusion list，在修改完成后，仍选中该项目，右键选择Remove from File Watcher exclusion list即可。
 
 <div align=center>![tip2]
 
