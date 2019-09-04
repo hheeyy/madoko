@@ -11,6 +11,7 @@ Package       : [UTF8]ctex
 　　Eclipse Che是一款基于浏览器的在线集成开发环境（IDE），提供多种语言支持，如Java、C++、Python、MySQL等，本教程主要以Java语言为例，来解决VRP（Vehicle Routing Problem）及其变种问题。
 
 # 注册登录
+
 　　首先开启浏览器访问网址：<http://120.55.69.180:8080> ，注册后显示如下登录界面，输入账号密码进行登录。
 
 <div align=center>![login]
@@ -1245,3 +1246,5 @@ public class Main {
 <div align=center>![tip2]
 
 [tip2]: images/tip2.png "tip2" { width:auto; max-width:90%;}
+
+<div align=left>
