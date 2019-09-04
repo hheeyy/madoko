@@ -8,43 +8,49 @@ Package       : [UTF8]ctex
 
 # Eclipse Che 概述 
 
-Eclipse Che是一款基于浏览器的在线集成开发环境（IDE），提供多种语言支持，如Java、C++、Python、MySQL等，本教程主要以Java语言为例，来解决VRP（Vehicle Routing Problem）及其变种问题。
+　　Eclipse Che是一款基于浏览器的在线集成开发环境（IDE），提供多种语言支持，如Java、C++、Python、MySQL等，本教程主要以Java语言为例，来解决VRP（Vehicle Routing Problem）及其变种问题。
 
 # 注册登录
-首先开启浏览器访问网址：<http://120.55.69.180:8080> ，注册后显示如下登录界面，输入账号密码进行登录。
+　　首先开启浏览器访问网址：<http://120.55.69.180:8080> ，注册后显示如下登录界面，输入账号密码进行登录。
 
 <div align=center>![login]
 
 [login]: images/login.png "login" { width:auto; max-width:90% }
 
+<div align=left>
+  
 # Eclipse Che 界面
 
-登录后显示eclipse che界面。
+　　登录后显示eclipse che界面。
 
 <div align=center>![eclipse che]
 
 [eclipse che]: images/eclipse-che.png "eclipse che" { width:auto; max-width:90% }
 
+<div align=left>
+
 - **Organizations**
 
-由管理者创建一个小组，由管理者和若干组员组成。管理员可以设置该小组工作空间数量、可同时运行的工作空间数量以及该小组内工作空间可使用的最大内存等。
+　　由管理者创建一个小组，由管理者和若干组员组成。管理员可以设置该小组工作空间数量、可同时运行的工作空间数量以及该小组内工作空间可使用的最大内存等。
 
-组员可以与管理者共享工作空间，管理者可以设置组员对工作空间的使用权限，也有权限查看组员的工作空间，进行共享代码，并且可以进行代码的编辑、修改和调试等。
+　　组员可以与管理者共享工作空间，管理者可以设置组员对工作空间的使用权限，也有权限查看组员的工作空间，进行共享代码，并且可以进行代码的编辑、修改和调试等。
 
 - **创建一个Workspace（以Java为例）**
 
-Workspace是程序储存和运行调试的地方，类似于本地的eclipse。创建一个属于自己的workspace的步骤如下：
+　　Workspace是程序储存和运行调试的地方，类似于本地的eclipse。创建一个属于自己的workspace的步骤如下：
 
-首先点击左侧菜单的Workspace，进入如下页面，可以看到此时已有两个工作空间存在及其一些属性。
+　　首先点击左侧菜单的Workspace，进入如下页面，可以看到此时已有两个工作空间存在及其一些属性。
 
 
 <div align=center>![workspace1]
 
 [workspace1]: images/workspace1.png "workspace1" { width:auto; max-width:90% }
 
+<div align=left>
+  
+　　接着点击 Add Workspace，出现如下页面。可以看到，workspace的名字用中文会报错，所以workspace的命名需要使用英文进行命名。在ORGANIZATION下拉框处可以选择workspace建立在哪一个小组下面，可选择与小组中的成员进行共享；该教程以Java语言为主，所以SELECT STACK处选择Java环境；RAM处可以调整该workspace的内存大小，默认是2GB；PROJECTS处可以预先在新建的workspace中添加或引入项目，也可以在建立workspace之后再进行这一操作，具体操作在4.3节中详述。
 
-接着点击 Add Workspace，出现如下页面。可以看到，workspace的名字用中文会报错，所以workspace的命名需要使用英文进行命名。在ORGANIZATION下拉框处可以选择workspace建立在哪一个小组下面，可选择与小组中的成员进行共享；该教程以Java语言为主，所以SELECT STACK处选择Java环境；RAM处可以调整该workspace的内存大小，默认是2GB；PROJECTS处可以预先在新建的workspace中添加或引入项目，也可以在建立workspace之后再进行这一操作，具体操作在4.3节中详述。
-最后点击右上角或者是最下方的CREAT键，一个workspace就成功创建了。
+　　最后点击右上角或者是最下方的CREAT键，一个workspace就成功创建了。
 
 
 <div align=center>![creat1]
@@ -63,11 +69,11 @@ Workspace是程序储存和运行调试的地方，类似于本地的eclipse。�
 
 [creat5]: images/creat5.png "creat5" { width:auto; max-width:90% }
 
+<div align=left>
 
+　　这里要注意的一点是，如果希望自己所创建的workspace与其他人进行共享，那么还需要进行如下操作。
 
-这里要注意的一点是，如果希望自己所创建的workspace与其他人进行共享，那么还需要进行如下操作。
-
-在菜单栏选择Workspace，可以看到在该账号上之前已经有两个workspace存在，选择新建立的workspace（test）；或者直接在上一步workspace创建成功的界面上点击Edit键，进入编辑模式。
+　　在菜单栏选择Workspace，可以看到在该账号上之前已经有两个workspace存在，选择新建立的workspace（test）；或者直接在上一步workspace创建成功的界面上点击Edit键，进入编辑模式。
 
 
 
@@ -83,7 +89,7 @@ Workspace是程序储存和运行调试的地方，类似于本地的eclipse。�
 
 
 
-点击Share，再点击Add Developer，勾选要进行分享的账号之后，点击Share后就完成了工作空间的分享。在PERMISSIONS下可以看到share的账户对该工作空间的使用权限，如是否可以对该工作空间的内容进行更改等。
+　　点击Share，再点击Add Developer，勾选要进行分享的账号之后，点击Share后就完成了工作空间的分享。在PERMISSIONS下可以看到share的账户对该工作空间的使用权限，如是否可以对该工作空间的内容进行更改等。
 
 
 
@@ -92,48 +98,47 @@ Workspace是程序储存和运行调试的地方，类似于本地的eclipse。�
 [creat6]: images/creat6.png "creat6" { width:auto; max-width:90% }
 
 
-
 <div align=center>![creat7]
 
 [creat7]: images/creat7.png "creat7" { width:auto; max-width:90% }
-
-
 
 
 <div align=center>![creat8]
 
 [creat8]: images/creat8.png "creat8" { width:auto; max-width:90% }
 
-
+<div align=left>
 
 #Workspace（以Java为例）
 
-Workspace是程序存放和运行调试的空间，类似于本地的eclipse。
+　　Workspace是程序存放和运行调试的空间，类似于本地的eclipse。
 在左侧点击进入新建立的test工作空间。
 
 ##Workspace窗口
 
-首先我们来看一下workspace的界面，界面由多个窗口组成，和eclipse的界面非常像，包括菜单栏、编辑器、包资源管理器、控制台等窗口。
+　　首先我们来看一下workspace的界面，界面由多个窗口组成，和eclipse的界面非常像，包括菜单栏、编辑器、包资源管理器、控制台等窗口。
 
 <div align=center>![window]
 
 [window]: images/window.png "window" { width:auto; max-width:90% }
 
+<div align=left>
+
 - **菜单栏**
 
-包括文件、编辑、帮助、搜索、运行与窗口等菜单，大部分的向导和各种配置对话框都可以从主菜单中打开。
+　　包括文件、编辑、帮助、搜索、运行与窗口等菜单，大部分的向导和各种配置对话框都可以从主菜单中打开。
 
 - **包资源管理器**
 
-用于显示Java项目中的源文件、引用的库等，开发Java程序主要是用这个视图。
+　　用于显示Java项目中的源文件、引用的库等，开发Java程序主要是用这个视图。
 
 - **编辑器**
 
-用于代码的编辑。
+　　用于代码的编辑。
 
 - **控制台**
 
-主要用于程序的输出显示或者是显示代码或项目配置的错误信息等。
+　　主要用于程序的输出显示或者是显示代码或项目配置的错误信息等。
 
 ##Workspace菜单
 
@@ -203,6 +208,7 @@ Workspace是程序存放和运行调试的空间，类似于本地的eclipse。
 
 [debug]: images/debug.png "debug" { width:auto; max-width:90% }
 
+<div align=left>
 
 ##如何开始写一个程序
 
@@ -214,24 +220,29 @@ Workspace --> Creat Project --> 选择Java环境（注意这里一定要选择�
 
 [newproject]: images/newproject.png "newproject" { width:auto; max-width:90% }
 
+<div align=left>
+
 ###Import a project
 
 Workspace --> Import Project --> 在URL处粘贴github项目包的链接
 
-*复制github项目地址*
+　　*复制github项目地址*
 
 <div align=center>![githubcopy]
 
 [githubcopy]: images/githubcopy.png "githubcopy" { width:auto; max-width:90% }
 
-*在eclipse che中引入github项目*
+<div align=left>
+
+　　*在eclipse che中引入github项目*
 
 <div align=center>![github]
 
 [github]: images/github.png "github" { width:auto; max-width:90% }
 
+<div align=left>
 
-假如github的respository是private的，则需要在URL的链接中插入账号密码信息，格式如下：
+　　假如github的respository是private的，则需要在URL的链接中插入账号密码信息，格式如下：
 
 *http://username:password@github.com/username/respository.git*
 
@@ -240,69 +251,69 @@ Workspace --> Import Project --> 在URL处粘贴github项目包的链接
 
 - **index**
 
-GVRP包索引概览，包括各个程序包的说明以及使用方法。
+　　GVRP包索引概览，包括各个程序包的说明以及使用方法。
 
 <http://120.55.69.180:8080/docs/index.html>
 
 
 - **frame**
 
-GVRP包求解VRP及其变种问题的框架如下图：
+　　GVRP包求解VRP及其变种问题的框架如下图：
 
 <div align=center>![frame1]
 
 [frame1]: images/frame1.jpeg "frame1" { width:auto; max-width:100% }
 
-在使用GVRP包解决VRP问题时，最重要的是明确目标函数以及约束条件，其次是算法的选择、算子的选择以及参数的调整。此外，在代码中用到某一个程序包时，必须在开头先import该程序包。例如，使用Constraint包的代码：
+<div align=left>
+
+　　在使用GVRP包解决VRP问题时，最重要的是明确目标函数以及约束条件，其次是算法的选择、算子的选择以及参数的调整。此外，在代码中用到某一个程序包时，必须在开头先import该程序包。例如，使用Constraint包的代码：
 
 ```java
   import nju.lzx.Constraint.*;
 ```
 
-以下是使用GVRP包解决VRP及其变种问题的步骤。
+　　以下是使用GVRP包解决VRP及其变种问题的步骤。
 
 **第一步：判断是否为基础VRP问题，算例中有无其他特殊变量，并实现加载算例函数**
 
-基础VRP问题，比如CVRP、VRPTW问题，可以直接使用GVRP包中的Instance类，Instance类中提供了基础VRP问题所需要的基本数据。如果是VRP变种问题，比如EVRP(Electric Vehicle Routing Problem)问题,则需要定义一些特殊变量，比如电动车的电池容量、最长行驶距离等，此时就需要在继承基础Instance类的基础之上，实现该特殊问题的InstanceVariant类。
+　　基础VRP问题，比如CVRP、VRPTW问题，可以直接使用GVRP包中的Instance类，Instance类中提供了基础VRP问题所需要的基本数据。如果是VRP变种问题，比如EVRP(Electric Vehicle Routing Problem)问题,则需要定义一些特殊变量，比如电动车的电池容量、最长行驶距离等，此时就需要在继承基础Instance类的基础之上，实现该特殊问题的InstanceVariant类。
 
-在确定该VRP问题需要的算例变量及数据之后，需要在eclipse che中实现加载算例数据的函数。不同算例的格式可能是不一样的，所以应该根据算例的特性来对加载算例函数（load_instance()）进行适当的修改。
+　　在确定该VRP问题需要的算例变量及数据之后，需要在eclipse che中实现加载算例数据的函数。不同算例的格式可能是不一样的，所以应该根据算例的特性来对加载算例函数（load_instance()）进行适当的修改。
 
 **第二步：确定目标函数以及约束条件**
 
-解决VRP问题首先要明确目标函数是什么，是最小化行驶距离，最小化总成本，最大化收益，或者是使策略中使用的车辆数目最少等等。目标函数不同，那么相同的解的质量也不同，算法优化的方向也会不同。
+　　解决VRP问题首先要明确目标函数是什么，是最小化行驶距离，最小化总成本，最大化收益，或者是使策略中使用的车辆数目最少等等。目标函数不同，那么相同的解的质量也不同，算法优化的方向也会不同。
 
-其次，要确定该问题的约束条件有哪些，以及该约束条件是否可以松弛（relax）。约束条件松弛的意思是，在构造解及优化解的过程中可以违反该约束条件，但是得相应付出与违反值成比的惩罚成本，违反的值越大，惩罚成本越高，惩罚成本与目标函数值用于评判一个解的优劣。一般而言，松弛的约束条件越多，能够得到的解越优，但是松弛条件多，邻域搜索空间变大，同等迭代次数情况下，相应的计算时间也会更大。另外，松弛条件越多，得不到可行最优解的概率也会越高。因此，约束条件是否进行松弛要视情况而定。
-
+　　其次，要确定该问题的约束条件有哪些，以及该约束条件是否可以松弛（relax）。约束条件松弛的意思是，在构造解及优化解的过程中可以违反该约束条件，但是得相应付出与违反值成比的惩罚成本，违反的值越大，惩罚成本越高，惩罚成本与目标函数值用于评判一个解的优劣。一般而言，松弛的约束条件越多，能够得到的解越优，但是松弛条件多，邻域搜索空间变大，同等迭代次数情况下，相应的计算时间也会更大。另外，松弛条件越多，得不到可行最优解的概率也会越高。因此，约束条件是否进行松弛要视情况而定。
 
 **第三步：构造初始解**
 
-在GVRP包中构造初始解使用的是贪心（Greedy）算法，Greedy类适用的是只有一种车型的VRP问题，GreedyGeneral类适用于多车型多仓库的问题。在约束条件松弛的情况下，初始解不一定是可行解。在构造初始解时首先要先确定该VRP问题属于什么类型，事先选择合适的插入算子（在第四步中介绍），再选择贪心算法类型构造初始解。
+　　在GVRP包中构造初始解使用的是贪心（Greedy）算法，Greedy类适用的是只有一种车型的VRP问题，GreedyGeneral类适用于多车型多仓库的问题。在约束条件松弛的情况下，初始解不一定是可行解。在构造初始解时首先要先确定该VRP问题属于什么类型，事先选择合适的插入算子（在第四步中介绍），再选择贪心算法类型构造初始解。
 
 **第四步：选择算子**
 
-算子用于对当前解进行操作从而获得另一个解。GVRP包中提供了三种算法的算子集。
+　　算子用于对当前解进行操作从而获得另一个解。GVRP包中提供了三种算法的算子集。
 
-在构造初始解时，需要用到InitialSolutionOperator包中Insert算子，用于贪心算法构造初始解。该程序包中提供了基础VRP问题的插入算法（InsertBase）、Cluster问题的插入算法（InsertCluster）、EVRP（Electric Vehicle Routing Problem）的插入算法（InsertElectric）、PDP（Pickup and Delivery）问题的插入算法（InsertPD）以及SD（Split Delivery）问题的插入算法（InsertSD）。假如是其他VRP问题需要用到特殊的Insert算子，可以在eclipse che中重新写一个Insert类，在主类中调用该Insert类即可。
+　　在构造初始解时，需要用到InitialSolutionOperator包中Insert算子，用于贪心算法构造初始解。该程序包中提供了基础VRP问题的插入算法（InsertBase）、Cluster问题的插入算法（InsertCluster）、EVRP（Electric Vehicle Routing Problem）的插入算法（InsertElectric）、PDP（Pickup and Delivery）问题的插入算法（InsertPD）以及SD（Split Delivery）问题的插入算法（InsertSD）。假如是其他VRP问题需要用到特殊的Insert算子，可以在eclipse che中重新写一个Insert类，在主类中调用该Insert类即可。
 
-使用TabuSearch优化解时，要选择邻域算子（LocalSearchOperator包）。在该程序包中主要提供三种类型的邻域算子，即Relocate、Exchange、Cross算子及它们的变种。这里需要注意的是，在使用ExchangeBaseDeep和RelocateBaseIntra算子时，前提条件是解中的路径必须包含子路径（子路径是当前路径中剔除任意一个客户点的路径集合）。因此使用这两个算子时，在eclipse che中要实现将初始解转化为包含子路径的解的函数（to Deep()）。除此之外还注意的一点是，算子并不是越多解的质量就会更高，因此要合理选择算子并且调整算子的参数来提高解的质量。
+　　使用TabuSearch优化解时，要选择邻域算子（LocalSearchOperator包）。在该程序包中主要提供三种类型的邻域算子，即Relocate、Exchange、Cross算子及它们的变种。这里需要注意的是，在使用ExchangeBaseDeep和RelocateBaseIntra算子时，前提条件是解中的路径必须包含子路径（子路径是当前路径中剔除任意一个客户点的路径集合）。因此使用这两个算子时，在eclipse che中要实现将初始解转化为包含子路径的解的函数（to Deep()）。除此之外还注意的一点是，算子并不是越多解的质量就会更高，因此要合理选择算子并且调整算子的参数来提高解的质量。
 
 ```java
   s = toDeep(Inst,s);//将初始解转化为含有子路径的解，需要在eclipse che中实现toDeep函数
 ```
-
-   最后一种是针对最小化车辆数目算法（VehicleReductionAlgo）所需要的算子（VehicleReductionOperator包）。其中包括对基础VRP问题的算子类及另外三种VRP变种问题的算子类。
+   　　最后一种是针对最小化车辆数目算法（VehicleReductionAlgo）所需要的算子（VehicleReductionOperator包）。其中包括对基础VRP问题的算子类及另外三种VRP变种问题的算子类。
 
 
 **第五步：选择优化算法**
 
-在GVRP包中提供了两种优化算法，分别是VehicleReductionAlgo和TabuSearch。前一种算法主要针对目标函数为最小化车辆数目的问题，后一种算法针对目标函数为其他类型的情况。TabuSearch的情况比较简单，VehicleReductionAlgo算法的参数相较而言比较复杂。使用VehicleReductionAlgo时，要选择邻域搜索算法（这里一般选择算法包中的TabuSearch），邻域搜索算子，LabelSetting（标签设置法），减少车辆数目算子等，即在TabuSearch的基础上还要再增加几个参数，比实现基础的目标函数更为复杂。
+　　在GVRP包中提供了两种优化算法，分别是VehicleReductionAlgo和TabuSearch。前一种算法主要针对目标函数为最小化车辆数目的问题，后一种算法针对目标函数为其他类型的情况。TabuSearch的情况比较简单，VehicleReductionAlgo算法的参数相较而言比较复杂。使用VehicleReductionAlgo时，要选择邻域搜索算法（这里一般选择算法包中的TabuSearch），邻域搜索算子，LabelSetting（标签设置法），减少车辆数目算子等，即在TabuSearch的基础上还要再增加几个参数，比实现基础的目标函数更为复杂。
 
 
 **第六步：调整默认参数进一步优化解**
 
-参数的控制对于最终解的优劣的影响很大。GVRP包中主要控制以下几个类型的参数：
+　　参数的控制对于最终解的优劣的影响很大。GVRP包中主要控制以下几个类型的参数：
 
-模式控制参数（ParaMode）：主要针对VRP问题的类型，如是否可以中途回到Depot，是否是PDP问题，是否是SD问题等。
+　　模式控制参数（ParaMode）：主要针对VRP问题的类型，如是否可以中途回到Depot，是否是PDP问题，是否是SD问题等。
 
 e.g.
 
@@ -311,7 +322,7 @@ e.g.
    inst.parameter.Mode.pickup_delivery_enable = false;//非PDP问题
 ```
 
-构造初始解参数（ParaInitialSolution）：使用贪心算法（Greedy）构造初始解时所需要的参数，包括是否打印构造初始解的过程等。
+　　构造初始解参数（ParaInitialSolution）：使用贪心算法（Greedy）构造初始解时所需要的参数，包括是否打印构造初始解的过程等。
 
 e.g.
 
@@ -320,7 +331,7 @@ e.g.
    inst.parameter.InitialSolution.log_print = false;//不输出构造初始解的过程
    inst.parameter.InitialSolution.log_detail = false;//不输出构造初始解的详细信息
 ```
-算子参数（ParaOperator）：控制算子对解进行操作时的参数。
+　　算子参数（ParaOperator）：控制算子对解进行操作时的参数。
 
 e.g.
 
@@ -329,7 +340,7 @@ e.g.
    inst.parameter.Operator.exchange_prune_threshhold = 1e6;//忽略交换操作阈值
    inst.parameter.Operator.remove_prune_threshhold = -1e6;//忽略删除操作阈值
 ```
-禁忌搜索参数（ParaTabuSearch）：对禁忌搜索的各个参数进行调整，如迭代次数，运行时长，禁忌周长等参数。
+　　禁忌搜索参数（ParaTabuSearch）：对禁忌搜索的各个参数进行调整，如迭代次数，运行时长，禁忌周长等参数。
 
 e.g.
 
@@ -338,23 +349,23 @@ e.g.
    inst.parameter.TabuSearch.log_print = true;//输出禁忌搜索操作过程信息
 ```
 
-除了这几类参数之外，还有一些特殊问题的参数，如路径长度参数、减少车辆数目算法的参数及TimeDependent参数等。
+　　除了这几类参数之外，还有一些特殊问题的参数，如路径长度参数、减少车辆数目算法的参数及TimeDependent参数等。
 
-使用GVRP包解决VRP及其变种问题的流程如下图：
+　　使用GVRP包解决VRP及其变种问题的流程如下图：
 
 <div align=center>![process]
 
 [process]: images/process.png "process" { width:auto; max-width:100% }
 
-
+<div align=left>
 
 ### Eclipse Che具体应用
 
-这一节给出了使用GVRP包解决不同VRP问题的实现代码。首先是最简单的CVRP问题，接着是以最小化行驶距离为目标函数的VRPTW问题，然后是在基础VRPTW问题的基础上改变目标函数，将目标函数改为最小化车辆数目，最后是添加一个新的约束条件（目标函数）的FCM-VRP问题的实现代码。
+　　这一节给出了使用GVRP包解决不同VRP问题的实现代码。首先是最简单的CVRP问题，接着是以最小化行驶距离为目标函数的VRPTW问题，然后是在基础VRPTW问题的基础上改变目标函数，将目标函数改为最小化车辆数目，最后是添加一个新的约束条件（目标函数）的FCM-VRP问题的实现代码。
 
 - **CVRP实现代码**
 
-CVRP（Capacitied Vehicle Routing Problem）问题是最基础的VRP问题，它的约束条件只有一个容量约束，目标函数是最小化行驶距离。所以约束条件Constraints数组大小只要为2即可。以下是具体实现代码：
+　　CVRP（Capacitied Vehicle Routing Problem）问题是最基础的VRP问题，它的约束条件只有一个容量约束，目标函数是最小化行驶距离。所以约束条件Constraints数组大小只要为2即可。以下是具体实现代码：
 
 ```java
   
@@ -583,7 +594,7 @@ public class CVRP {
 ```
 - **VRPTW实现代码(solomon)**
 
-VRPTW（Vehicle Routing Problem with Time Windows）问题和CVRP问题的区别在于VRPTW问题多了一个约束条件，因此需要在CVRP问题的基础上再添加一个时间窗约束，并且VRPTW与CVRP问题使用的算例不同，因此加载算例数据的函数（load_Instance()）也需要重写。此外在CVRP中使用TabuSearch时并未使用到LabelSetting（标签设置法），在VRPTW问题中我们将实现LabelSetting的应用，具体代码实现如下：
+　　VRPTW（Vehicle Routing Problem with Time Windows）问题和CVRP问题的区别在于VRPTW问题多了一个约束条件，因此需要在CVRP问题的基础上再添加一个时间窗约束，并且VRPTW与CVRP问题使用的算例不同，因此加载算例数据的函数（load_Instance()）也需要重写。此外在CVRP中使用TabuSearch时并未使用到LabelSetting（标签设置法），在VRPTW问题中我们将实现LabelSetting的应用，具体代码实现如下：
 
 ```java
 import java.io.BufferedReader;
@@ -838,7 +849,7 @@ public class VRPTW {
 
 - **实现目标函数的改变**
 
-这里仍以VRPTW问题为例，上一个VRPTW问题是以最小化行驶距离为目标函数，如果要以最小化车辆数目为目标函数，则需要使用VehicleReductionAlgo算法。由于是同一个VRPTW问题，算例也相同，所以其余代码和上一个VRPTW的代码实现相同，这里主要给出main函数中初始解之后优化算法VehicleReductionAlgo实现的代码。
+　　这里仍以VRPTW问题为例，上一个VRPTW问题是以最小化行驶距离为目标函数，如果要以最小化车辆数目为目标函数，则需要使用VehicleReductionAlgo算法。由于是同一个VRPTW问题，算例也相同，所以其余代码和上一个VRPTW的代码实现相同，这里主要给出main函数中初始解之后优化算法VehicleReductionAlgo实现的代码。
 
 ```java
     import nju.lzx.LabelSetting.*;
@@ -866,7 +877,7 @@ public class VRPTW {
 
 - **添加一个约束的情况（FCM-VRP）**
 
-该问题是考虑燃料消耗的车辆路径问题，目标是最小化成本，成本中包括燃料消耗的成本。该问题和最基本的VRP问题之间最大的区别是在GVRP包中没有燃料消耗的约束条件类，因此需要在eclipse che中再写一个约束类（MinimizeFuelCost）。
+　　该问题是考虑燃料消耗的车辆路径问题，目标是最小化成本，成本中包括燃料消耗的成本。该问题和最基本的VRP问题之间最大的区别是在GVRP包中没有燃料消耗的约束条件类，因此需要在eclipse che中再写一个约束类（MinimizeFuelCost）。
 
 ***MinimizeFuelCost.class***
 
@@ -1047,7 +1058,7 @@ public class MinimizeFuelCost extends AbstractConstraint implements Base {
 }
 ```
 
-然后需要在解决FCM-VRP问题的主类中调用MinimizeFuelCost类作为目标函数，代码如下：
+　　然后需要在解决FCM-VRP问题的主类中调用MinimizeFuelCost类作为目标函数，代码如下：
 
 ***Main.class***
 
@@ -1218,7 +1229,7 @@ public class Main {
 
 ### ***tips***
 
-- 文件重定向
+- **文件重定向**
 
     文件重定向，即将原本在控制台输出的信息另存为txt文件，便于查看结果
 
@@ -1227,10 +1238,10 @@ public class Main {
     System.setOut(ps);
 ```
 
-- File Watcher exclusion list
+- **File Watcher exclusion list**
 
- 小组成员共同查看同一工作空间并同时编辑同一项目时，在编辑代码时很容易产生跳行等情况，因此在修改项目时，最好先将该项目加入File Watcher exclusion list，这样在编辑时其他拥有权限的成员无法实时看到你的修改，在修改完成后，将该项目移出list，其他成员即可看到当次修改。具体操作为，选中需要加入list的项目，右键点击鼠标，点击Add to File Watcher exclusion list，在修改完成后，仍选中该项目，右键选择Remove from File Watcher exclusion list即可。
+ 　　小组成员共同查看同一工作空间并同时编辑同一项目时，在编辑代码时很容易产生跳行等情况，因此在修改项目时，最好先将该项目加入File Watcher exclusion list，这样在编辑时其他拥有权限的成员无法实时看到你的修改，在修改完成后，将该项目移出list，其他成员即可看到当次修改。具体操作为，选中需要加入list的项目，右键点击鼠标，点击Add to File Watcher exclusion list，在修改完成后，仍选中该项目，右键选择Remove from File Watcher exclusion list即可。
 
-![tip2]
+<div align=center>![tip2]
 
-[tip2]: images/tip2.png "tip2" { width:auto; max-width:90% }
+[tip2]: images/tip2.png "tip2" { width:auto; max-width:90%;}
