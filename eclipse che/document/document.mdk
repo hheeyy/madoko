@@ -261,9 +261,9 @@ Workspace --> Import Project --> 在URL处粘贴github项目包的链接
 
 　　GVRP包求解VRP及其变种问题的框架如下图：
 
-<div align=center>![frame1]
+<div align=left>![frame1]
 
-[frame1]: images/frame1.jpeg "frame1" { width:auto; max-width:150% }
+[frame1]: images/frame1.jpeg "frame1" { width:auto; max-width:200%; }
 
 <div align=left>
 
@@ -354,7 +354,7 @@ e.g.
 
 　　使用GVRP包解决VRP及其变种问题的流程如下图：
 
-<div align=center>![process]
+<div align=left>![process]
 
 [process]: images/process.png "process" { width:auto; max-width:200% }
 
