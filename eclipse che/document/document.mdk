@@ -368,6 +368,7 @@ e.g.
 
 　　CVRP（Capacitied Vehicle Routing Problem）问题是最基础的VRP问题，它的约束条件只有一个容量约束，目标函数是最小化行驶距离。所以约束条件Constraints数组大小只要为2即可。以下是具体实现代码：
 
+<table><tr><td bgcolor=#000000>
 ```java
   
 import java.io.BufferedReader;
